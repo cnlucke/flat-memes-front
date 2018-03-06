@@ -25,6 +25,8 @@ class App {
       this.memes.push(meme);
     })
     this.displayMemes()
+    this.seeMoreListeners()
+    this.addCommentListeners()
   }
 
   displayMemes() {
@@ -33,8 +35,6 @@ class App {
     for(let i=0; i < likeButtons.length; i++) {
       likeButtons[i].addEventListener('click', (event) => this.incrementLikes(event))
     }
-    this.seeMoreListeners()
-    this.addCommentListeners()
   }
 
   incrementLikes(event) {
