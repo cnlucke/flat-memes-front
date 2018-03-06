@@ -66,6 +66,9 @@ class App {
     fetch(patchUrl, options)
       .then(res => res.json())
       .then(json => {
+        // ratingNode.innerHTML = '<i class="check icon"></i>' + foundComment.rating + ' like'
+        // if (foundComment.rating > 1) ratingNode.innerHTML += 's'
+
         this.fetchMemes()
     })
   }
