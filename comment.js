@@ -9,9 +9,13 @@ class Comment {
 
   render() {
     let commentString = `<div class="comment">`
-    commentString += `<div>${this.text}</div>`
-    commentString += `<div>${this.rating}</div>`
-    commentString += `</div>`
+    commentString += '<div class="content">'
+    commentString += '<div class="metadata">'
+    commentString += `<div class='rating'>${this.rating}</div>`
+    commentString += `<div class='date'>${this.created_at}</div>`
+    commentString += '</div>' //close metadata
+    commentString += `<div class='text'>${this.text}</div>`
+    commentString += `</div></div>` //close content and comment
     return commentString
   }
 }
