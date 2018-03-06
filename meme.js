@@ -16,7 +16,9 @@ class Meme {
                       <img src="${this.image_url}">
                      </div>`
     }
-    memeString += `<div class="content">`
+    memeString += `<div class="content">
+                   <i class="right floated like icon"></i>
+                   <i class="right floated star icon"></i>`
 
     if (this.title) {
       memeString += `<a class="header">${this.title}</a>`
@@ -31,8 +33,8 @@ class Meme {
     memeString += `</div>` //closing content div
     memeString += `<div class="extra content">
         <a>
-          <i class="user icon"></i>
-          Upvotes: ${this.rating}
+          <i class="check icon"></i>
+          ${this.rating} votes
         </a>
       </div>`
     return memeString
