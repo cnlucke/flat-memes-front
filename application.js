@@ -23,7 +23,36 @@ class App {
   }
 
   displayMemes() {
+    console.log("displaying these memes:", this.memes)
     this.memeContainer.innerHTML = this.memes.map((meme) => meme.render()).join('')
+    const likeButtons = document.getElementsByClassName('like')
+    for(let i=0; i < likeButtons.length; i++) {
+      likeButtons[i].addEventListener('click', (event) => this.incrementLikes(event))
+    }
+  }
+
+  incrementLikes(event) {
+    // find matching meme object
+    // /api/v1/memes/:id
+    const patchUrl = this.memeUrl + '/' + event.target.dataset.id
+    let foundMeme = this.memes.find((meme) => meme.id == event.target.dataset.id)
+    foundMeme.rating += 1;
+    console.log("found matching meme:", foundMeme.id, foundMeme.rating)
+    let options = {
+      method: 'PATCH',
+      body: JSON.stringify( {meme: foundMeme} ),
+      headers: {
+        "Content-Type": 'application/json',
+        Accept: 'application/json'
+      }
+    }
+
+    fetch(patchUrl, options)
+      .then(res => res.json())
+      .then(json => {
+        console.log("patched meme:", json.id, json.rating)
+        this.fetchMemes()
+    })
   }
 
   addButtonListeners() {
@@ -62,7 +91,7 @@ class App {
     });
   }
 
-  
+
 
 
 

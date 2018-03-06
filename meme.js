@@ -17,8 +17,7 @@ class Meme {
                      </div>`
     }
     memeString += `<div class="content">
-                   <i class="right floated like icon"></i>
-                   <i class="right floated star icon"></i>`
+                   <i class="right floated like icon" data-id="${this.id}"></i>`
 
     if (this.title) {
       memeString += `<a class="header">${this.title}</a>`
@@ -75,8 +74,6 @@ class Meme {
     }
   }
 }
-// var hours = Math.abs(date1 - date2) / 36e5;
-
 
 // <div class="ui card">
 //   <div class="image">
