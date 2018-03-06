@@ -96,7 +96,12 @@ class App {
     }
     fetch(`${this.memeUrl}/${memeId}/comments`, options)
       .then(res => res.json())
-      .then(json => console.log(json))
+      .then(json => {
+        //find parent meme object using memeId
+        let parent = this.memes.find((meme) => meme.id == memeId)
+        parent.comments.push(json)
+        //attach new comment to parents' comment container
+      })
   }
 
   newMemeButtonEventListener() {
