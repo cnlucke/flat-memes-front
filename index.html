@@ -8,17 +8,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
   </head>
   <body>
-    <div id="meme-container">
-  </div>
 
-
-
-    <button class="ui icon green button">
-      <i class="angle up icon"></i>
-    </button><br>
-    <button class="ui icon red button">
-      <i class="angle down icon"></i>
-    </button>
+    <div class="ui secondary pointing menu">
+      <a class="item active">Home</a>
+      <a class="item">Top Memes</a>
+      <a class="item">Fresh Memes</a>
+      <a id="new-meme" class="item">Create a Meme</a>
+      <div class="right menu">
+        <a class="ui item">Logout</a>
+      </div>
+    </div>
+    <div class="ui segment">
+      <div id="meme-container">
+      </div>
+    </div>
+    
     <script src="meme.js"></script>
     <script src="comment.js"></script>
     <script src="application.js"></script>
