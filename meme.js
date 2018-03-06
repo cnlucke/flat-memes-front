@@ -41,6 +41,9 @@ class Meme {
   }
 }
 
+// var hours = Math.abs(date1 - date2) / 36e5;
+
+
 // <div class="ui card">
 //   <div class="image">
 //     <img src="/images/avatar2/large/kristy.png">
