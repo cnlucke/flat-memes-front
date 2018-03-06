@@ -17,7 +17,9 @@ class Meme {
                       <img src="${this.image_url}">
                      </div>`
     }
-    memeString += `<div class="content">`
+    memeString += `<div class="content">
+                   <i class="right floated like icon"></i>
+                   <i class="right floated star icon"></i>`
 
     if (this.title) {
       memeString += `<a class="header">${this.title}</a>`
@@ -32,11 +34,14 @@ class Meme {
     memeString += `</div>` //closing content div
     memeString += `<div class="extra content">
         <a>
-          <i class="like icon"></i>
-          Upvotes: ${this.rating}
+          <i class="check icon"></i>
+          ${this.rating} votes
         </a>
       </div>
-      <a href="#" class="see-comments" data-id="${this.id}">See Comments</a>
+      <div class="ui bottom attached button" data-id="${this.id}">
+        <i class="add icon"></i>
+          See Comments
+      </div>
       <div class="comment-container" style="visibility:hidden"></div>`
     return memeString
   }
@@ -44,7 +49,6 @@ class Meme {
   createComments() {
     this.comments.forEach(commentData => {
       let comment = new Comment(commentData)
-      console.log(comment.render())
     })
   }
 }
