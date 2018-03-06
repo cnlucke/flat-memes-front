@@ -24,6 +24,14 @@ class App {
 
   displayMemes() {
     this.memeContainer.innerHTML = this.memes.map((meme) => meme.render()).join('')
+    const likeButtons = document.getElementsByClassName('like')
+    for(let i=0; i < likeButtons.length; i++) {
+      likeButtons[i].addEventListener('click', (event) => this.incrementLikes(event))
+    }
+  }
+
+  incrementLikes(event) {
+    console.log(event)
   }
 
   addButtonListeners() {
