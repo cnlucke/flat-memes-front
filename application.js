@@ -20,7 +20,8 @@ class App {
       this.memes.push(meme);
     })
     this.displayMemes()
-    this.addButtonListeners()
+    this.seeMoreListeners()
+    this.addCommentListeners()
   }
 
   displayMemes() {
@@ -56,8 +57,8 @@ class App {
     })
   }
 
-  addButtonListeners() {
-    let seeButtons = document.querySelectorAll('.button')
+  seeMoreListeners() {
+    let seeButtons = document.querySelectorAll('.see-more')
     seeButtons.forEach(button => {
       button.addEventListener('click', event => {
         let commentContainer = event.target.nextElementSibling
@@ -70,7 +71,33 @@ class App {
     })
   }
 
-  newMemeButtonEventListener() {
+  addCommentListeners() {
+    let buttons = document.querySelectorAll('.new-comment')
+    buttons.forEach(button => {
+      button.addEventListener('click', event => {
+        let commentText = event.target.previousElementSibling.firstChild
+        let id = event.target.dataset.id
+        this.postComment(commentText.value, id)
+        commentText.value = ""
+      })
+    })
+  }
+
+  postComment(text, memeId) {
+    let options = {
+      method:'POST',
+      headers: {
+        'Content-Type':'application/json',
+        Accept:'application/json'
+      },
+      body: JSON.stringify({text:text, rating:0, meme_id:memeId})
+    }
+    fetch(`${this.memeUrl}/${memeId}/comments`, options)
+      .then(res => res.json())
+      .then(json => console.log(json))
+  }
+
+  newMemeEventListener() {
     let newMeme = document.getElementById('new-meme');
     newMeme.addEventListener('click', () => {
       this.removeActiveClassFromAllButtons();

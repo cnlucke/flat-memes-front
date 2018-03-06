@@ -29,7 +29,7 @@ class Meme {
     if (this.text) {
       memeString += `<div class="description">${this.text}</div>`
     }
-    let comments = this.createComments()
+    let comments = this.createComments() + this.renderCommentForm();
     memeString += `</div>` //closing content div
     memeString += `<div class="extra content">
         <a>
@@ -37,11 +37,11 @@ class Meme {
           ${this.rating} votes
         </a>
       </div>
-      <div class="ui bottom attached button" data-id="${this.id}">
+      <div class="ui bottom attached button see-more" data-id="${this.id}">
         <i class="add icon"></i>
           See Comments
       </div>
-      <div class="comment-container" style="display:none">${comments}</div>`
+      <div class="comment-container ui comments" style="display:none">${comments}</div>`
     return memeString
   }
 
@@ -55,7 +55,11 @@ class Meme {
   }
 
   renderCommentForm() {
-    let form;
+    let formString = `<form class='ui reply form'>`
+    formString += `<div class='field'><textarea></textarea></div>`
+    formString += `<div data-id="${this.id}" class="ui primary submit button new-comment">Add Comment</div>`
+    formString += `</form>`
+    return formString
   }
 
 
