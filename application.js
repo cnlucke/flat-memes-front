@@ -25,7 +25,6 @@ class App {
   }
 
   displayMemes() {
-    console.log("displaying these memes:", this.memes)
     this.memeContainer.innerHTML = this.memes.map((meme) => meme.render()).join('')
     const likeButtons = document.getElementsByClassName('like')
     for(let i=0; i < likeButtons.length; i++) {
@@ -39,7 +38,6 @@ class App {
     // find matching meme object
     let foundMeme = this.memes.find((meme) => meme.id == event.target.dataset.id)
     foundMeme.rating += 1;
-    console.log("found matching meme:", foundMeme.id, foundMeme.rating)
     let options = {
       method: 'PATCH',
       body: JSON.stringify( {meme: foundMeme} ),
@@ -52,7 +50,6 @@ class App {
     fetch(patchUrl, options)
       .then(res => res.json())
       .then(json => {
-        console.log("patched meme:", json.id, json.rating)
         this.fetchMemes()
     })
   }
