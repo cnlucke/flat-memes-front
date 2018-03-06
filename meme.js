@@ -7,6 +7,7 @@ class Meme {
     this.rating = rating;
     this.created_at = created_at;
     this.comments = comments;
+    this.createComments()
   }
 
   render() {
@@ -21,7 +22,15 @@ class Meme {
       memeString += `<div>${this.text}</div>`
     }
     memeString += `<div>${this.rating}</div>`
+
     return memeString
+  }
+
+  createComments() {
+    this.comments.forEach(commentData => {
+      let comment = new Comment(commentData)
+      console.log(comment.render())
+    })
   }
 }
 
