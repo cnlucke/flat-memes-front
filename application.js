@@ -99,7 +99,7 @@ class App {
       .then(json => console.log(json))
   }
 
-  newMemeEventListener() {
+  newMemeButtonEventListener() {
     let newMeme = document.getElementById('new-meme');
     newMeme.addEventListener('click', () => {
       this.removeActiveClassFromAllButtons();
