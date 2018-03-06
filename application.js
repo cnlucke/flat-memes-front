@@ -29,8 +29,6 @@ class App {
       return new Date(b.created_at) - new Date(a.created_at)
     })
     this.displayMemes()
-    this.seeMoreListeners()
-    this.addCommentListeners()
   }
 
   displayMemes() {
@@ -39,6 +37,8 @@ class App {
     for(let i=0; i < memeLikeButtons.length; i++) {
       memeLikeButtons[i].addEventListener('click', (event) => this.incrementLikes(event))
     }
+    this.seeMoreListeners()
+    this.addCommentListeners()
   }
 
   incrementLikes(event) {
