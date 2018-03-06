@@ -7,7 +7,6 @@ class Meme {
     this.rating = rating;
     this.created_at = created_at;
     this.comments = comments;
-    this.createComments()
   }
 
   render() {
@@ -31,6 +30,7 @@ class Meme {
     if (this.text) {
       memeString += `<div class="description">${this.text}</div>`
     }
+    let comments = this.createComments()
     memeString += `</div>` //closing content div
     memeString += `<div class="extra content">
         <a>
@@ -42,15 +42,19 @@ class Meme {
         <i class="add icon"></i>
           See Comments
       </div>
-      <div class="comment-container" style="visibility:hidden"></div>`
+      <div class="comment-container" style="display:none">${comments}</div>`
     return memeString
   }
 
   createComments() {
+    let commentString = ''
     this.comments.forEach(commentData => {
       let comment = new Comment(commentData)
+      commentString += comment.render()
     })
+    return commentString
   }
+
 }
 
 // <div class="ui card">
