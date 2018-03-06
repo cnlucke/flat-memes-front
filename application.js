@@ -3,7 +3,7 @@ class App {
     this.memeContainer = document.getElementById('meme-container')
     this.memeUrl = 'http://localhost:3000/api/v1/memes'
     this.fetchMemes()
-    this.newMemeEventListener();
+    this.newMemeButtonEventListener();
     this.memes = []
   }
 
@@ -39,9 +39,11 @@ class App {
       })
     })
   }
-  newMemeEventListener() {
+
+  newMemeButtonEventListener() {
     let newMeme = document.getElementById('new-meme');
     newMeme.addEventListener('click', () => {
+      this.removeActiveClassFromAllButtons();
       newMeme.classList.add('active');
       this.memeContainer.innerHTML = '';
       this.memeContainer.innerHTML += `<form id="new-meme-form" class="ui form">
@@ -59,7 +61,41 @@ class App {
                                         </div>
                                         <button class="ui button" type="submit">Submit</button>
                                       </form>`;
+      this.newMemeFormSubmissionListener();
     });
+  }
+
+  newMemeFormSubmissionListener() {
+    let newMeme = document.getElementById('new-meme-form')
+    newMeme.addEventListener('submit', (event) => {
+      event.preventDefault();
+      this.postNewMemeToApi(newMeme[0].value, newMeme[1].value, newMeme[2].value);
+    })
+  }
+
+  postNewMemeToApi(title, image_url, text) {
+    let options = {
+      method: 'POST',
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json"
+      },
+      body: JSON.stringify({"meme": {"title": title, "image_url": image_url, "text": text, "rating": 0}})
+    }
+    fetch('http://localhost:3000/api/v1/memes', options)
+      .then(res => res.json())
+      .then(json => console.log(json));
+  }
+
+  removeActiveClassFromAllButtons() {
+    let home = document.getElementById('home');
+    let top = document.getElementById('top');
+    let fresh = document.getElementById('fresh');
+    let newMeme = document.getElementById('new-meme');
+    home.classList.remove('active');
+    top.classList.remove('active');
+    fresh.classList.remove('active');
+    newMeme.classList.remove('active');
   }
 
 }
