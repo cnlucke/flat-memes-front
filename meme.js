@@ -7,6 +7,7 @@ class Meme {
     this.rating = rating;
     this.created_at = created_at;
     this.comments = comments;
+    this.createComments()
   }
 
   render() {
@@ -38,6 +39,13 @@ class Meme {
       <a href="#" class="see-comments" data-id="${this.id}">See Comments</a>
       <div class="comment-container" style="visibility:hidden"></div>`
     return memeString
+  }
+
+  createComments() {
+    this.comments.forEach(commentData => {
+      let comment = new Comment(commentData)
+      console.log(comment.render())
+    })
   }
 }
 
