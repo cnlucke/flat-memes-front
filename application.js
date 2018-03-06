@@ -74,6 +74,13 @@ class App {
     let seeButtons = document.querySelectorAll('.see-more')
     seeButtons.forEach(button => {
       button.addEventListener('click', event => {
+        let icon = event.target.childNodes[1]
+        if (icon.classList.contains('add')) {
+          icon.classList.replace('add', 'minus')
+        } else {
+          icon.classList.replace('minus', 'add')
+        }
+        console.log(icon)
         let commentContainer = event.target.nextElementSibling
         if(commentContainer.style.display === 'block') {
           commentContainer.style.display = 'none'
