@@ -26,7 +26,7 @@ class App {
       meme.comments = [];
       memeData.comments.forEach((comment) => {
         let newComment = new Comment(comment)
-        newComment.meme = meme;
+        newComment.meme_id = meme.id;
         meme.comments.push(newComment)
       })
       this.memes.push(meme);
@@ -97,9 +97,7 @@ class App {
   }
 
   addCommentLikeListeners() {
-    console.log("adding comment like listeners")
     const commentLikeButtons = document.querySelectorAll(".comment.like")
-    console.log(commentLikeButtons)
     for(let i=0; i < commentLikeButtons.length; i++) {
       commentLikeButtons[i].addEventListener('click', (event) => this.incrementCommentLikes(event))
     }
@@ -127,31 +125,35 @@ class App {
         const newComments = parent.createComments() + parent.renderCommentForm()
         parentCommentContainer.innerHTML = newComments;
         const commentLikeButton = parentCommentContainer.querySelectorAll(".comment.like")
-        console.log("new comment like button", commentLikeButton)
       })
   }
 
   incrementCommentLikes(event) {
     // /api/v1/memes/:meme_id/comments/:id
-    console.log(event.target.dataset)
-    // const patchUrl = this.memeUrl + '/' + event.target.dataset.id
-    // // find matching meme object
-    // let foundMeme = this.memes.find((meme) => meme.id == event.target.dataset.id)
-    // foundMeme.rating += 1;
-    // let options = {
-    //   method: 'PATCH',
-    //   body: JSON.stringify( {meme: foundMeme} ),
-    //   headers: {
-    //     "Content-Type": 'application/json',
-    //     Accept: 'application/json'
-    //   }
-    // }
-    //
-    // fetch(patchUrl, options)
-    //   .then(res => res.json())
-    //   .then(json => {
-    //     this.fetchMemes()
-    // })
+    const ratingNode = event.target.previousSibling
+    const memeId = event.target.dataset.meme
+    const commentId = event.target.dataset.id
+    const patchUrl = this.memeUrl + '/' + memeId + '/comments/' + commentId
+    //find matching meme object
+    let foundMeme = this.memes.find((meme) => meme.id == memeId)
+    //now find comment object
+    let foundComment = foundMeme.comments.find((comment) => comment.id == commentId)
+    foundComment.rating += 1;
+    let options = {
+      method: 'PATCH',
+      body: JSON.stringify( {comment: foundComment} ),
+      headers: {
+        "Content-Type": 'application/json',
+        Accept: 'application/json'
+      }
+    }
+
+    fetch(patchUrl, options)
+      .then(res => res.json())
+      .then(json => {
+        ratingNode.innerHTML = '<i class="check icon"></i>' + foundComment.rating + ' like'
+        if (foundComment.rating > 1) ratingNode.innerHTML += 's'
+    })
   }
 
 
