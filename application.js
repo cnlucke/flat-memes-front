@@ -10,6 +10,7 @@ class App {
   buttonEventListeners() {
     this.newMemeButtonEventListener();
     this.freshButtonEventListener();
+    this.topButtonEventListener();
   }
 
   fetchMemes() {
@@ -23,6 +24,9 @@ class App {
     json.forEach(memeData => {
       let meme = new Meme(memeData);
       this.memes.push(meme);
+    })
+    this.memes.sort((a,b) => {
+      return new Date(b.created_at) - new Date(a.created_at)
     })
     this.displayMemes()
   }
@@ -161,6 +165,18 @@ class App {
       this.memeContainer.innerHTML = '';
       this.createMemes(this.memes);
     });
+  }
+
+  topButtonEventListener() {
+    let top = document.getElementById('top');
+    top.addEventListener('click', event => {
+      this.removeActiveClassFromAllButtons();
+      top.classList.add('active');
+      this.memes.sort((a,b) => {
+        return b.rating - a.rating
+      })
+      this.displayMemes();
+    })
   }
 
   removeActiveClassFromAllButtons() {
