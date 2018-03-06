@@ -14,6 +14,7 @@ class App {
   }
 
   createMemes(json) {
+    this.memes = []
     json.forEach(memeData => {
       let meme = new Meme(memeData);
       this.memes.push(meme);
@@ -33,9 +34,9 @@ class App {
   }
 
   incrementLikes(event) {
-    // find matching meme object
     // /api/v1/memes/:id
     const patchUrl = this.memeUrl + '/' + event.target.dataset.id
+    // find matching meme object
     let foundMeme = this.memes.find((meme) => meme.id == event.target.dataset.id)
     foundMeme.rating += 1;
     console.log("found matching meme:", foundMeme.id, foundMeme.rating)
