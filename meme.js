@@ -17,7 +17,7 @@ class Meme {
                      </div>`
     }
     memeString += `<div class="content">
-                   <i class="right floated like icon" data-id="${this.id}"></i>`
+                   <i class="right floated meme like icon" data-id="${this.id}"></i>`
 
     if (this.title) {
       memeString += `<a class="header">${this.title}</a>`
@@ -41,7 +41,7 @@ class Meme {
         <i class="add icon"></i>
           See Comments
       </div>
-      <div class="comment-container ui comments" style="display:none">${comments}</div>`
+      <div class="comment-container ui comments" style="display:none" id="${this.id}">${comments}</div>`
     return memeString
   }
 

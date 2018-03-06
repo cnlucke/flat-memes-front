@@ -35,9 +35,9 @@ class App {
 
   displayMemes() {
     this.memeContainer.innerHTML = this.memes.map((meme) => meme.render()).join('')
-    const likeButtons = document.getElementsByClassName('like')
-    for(let i=0; i < likeButtons.length; i++) {
-      likeButtons[i].addEventListener('click', (event) => this.incrementLikes(event))
+    const memeLikeButtons = document.querySelectorAll(".meme.like")
+    for(let i=0; i < memeLikeButtons.length; i++) {
+      memeLikeButtons[i].addEventListener('click', (event) => this.incrementLikes(event))
     }
   }
 
@@ -102,9 +102,13 @@ class App {
       .then(res => res.json())
       .then(json => {
         //find parent meme object using memeId
-        let parent = this.memes.find((meme) => meme.id == memeId)
+        const parent = this.memes.find((meme) => meme.id == memeId)
+        //push new comment into parent comments array
         parent.comments.push(json)
-        //attach new comment to parents' comment container
+        //render comments and replace parents' comment container
+        const parentCommentContainer = document.getElementById(`${memeId}`)
+        const newComments = parent.createComments() + parent.renderCommentForm()
+        parentCommentContainer.innerHTML = newComments
       })
   }
 

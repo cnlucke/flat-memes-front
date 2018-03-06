@@ -11,7 +11,8 @@ class Comment {
     let commentString = `<div class="comment">`
     commentString += '<div class="content">'
     commentString += '<div class="metadata">'
-    commentString += `<div class='rating'>${this.rating}</div>`
+    commentString += `<div class='rating'><i class="check icon"></i> ${this.rating} likes</div>`
+    commentString += `<i class="left comment like icon" data-id="${this.id}"></i>`
     commentString += `<div class='date'>${this.formatDate(this.created_at)}</div>`
     commentString += '</div>' //close metadata
     commentString += `<div class='text'>${this.text}</div>`
@@ -30,8 +31,13 @@ class Comment {
     const day = date.getDate();
     const monthIndex = date.getMonth();
     const year = date.getFullYear();
+    const hour = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hour >= 12 ? 'pm' : 'am';
+    const adjustedHour = hour > 12 ? hour - 12 : hour;
 
-    return monthNames[monthIndex] + ' ' + day + ', ' + year;
+
+    return monthNames[monthIndex] + ' ' + day + ', ' + year + ' ' + adjustedHour + ":" + minutes + " " + ampm;
 }
 
 }
