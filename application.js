@@ -23,6 +23,12 @@ class App {
     this.memes = []
     json.forEach(memeData => {
       let meme = new Meme(memeData);
+      meme.comments = [];
+      memeData.comments.forEach((comment) => {
+        let newComment = new Comment(comment)
+        newComment.meme = meme;
+        meme.comments.push(newComment)
+      })
       this.memes.push(meme);
     })
     this.memes.sort((a,b) => {
@@ -35,13 +41,14 @@ class App {
     this.memeContainer.innerHTML = this.memes.map((meme) => meme.render()).join('')
     const memeLikeButtons = document.querySelectorAll(".meme.like")
     for(let i=0; i < memeLikeButtons.length; i++) {
-      memeLikeButtons[i].addEventListener('click', (event) => this.incrementLikes(event))
+      memeLikeButtons[i].addEventListener('click', (event) => this.incrementMemeLikes(event))
     }
     this.seeMoreListeners()
     this.addCommentListeners()
+    this.addCommentLikeListeners()
   }
 
-  incrementLikes(event) {
+  incrementMemeLikes(event) {
     // /api/v1/memes/:id
     const patchUrl = this.memeUrl + '/' + event.target.dataset.id
     // find matching meme object
@@ -89,6 +96,15 @@ class App {
     })
   }
 
+  addCommentLikeListeners() {
+    console.log("adding comment like listeners")
+    const commentLikeButtons = document.querySelectorAll(".comment.like")
+    console.log(commentLikeButtons)
+    for(let i=0; i < commentLikeButtons.length; i++) {
+      commentLikeButtons[i].addEventListener('click', (event) => this.incrementCommentLikes(event))
+    }
+  }
+
   postComment(text, memeId) {
     let options = {
       method:'POST',
@@ -104,13 +120,40 @@ class App {
         //find parent meme object using memeId
         const parent = this.memes.find((meme) => meme.id == memeId)
         //push new comment into parent comments array
-        parent.comments.push(json)
+        const newComment = new Comment(json)
+        parent.comments.push(newComment)
         //render comments and replace parents' comment container
         const parentCommentContainer = document.getElementById(`${memeId}`)
         const newComments = parent.createComments() + parent.renderCommentForm()
-        parentCommentContainer.innerHTML = newComments
+        parentCommentContainer.innerHTML = newComments;
+        const commentLikeButton = parentCommentContainer.querySelectorAll(".comment.like")
+        console.log("new comment like button", commentLikeButton)
       })
   }
+
+  incrementCommentLikes(event) {
+    // /api/v1/memes/:meme_id/comments/:id
+    console.log(event.target.dataset)
+    // const patchUrl = this.memeUrl + '/' + event.target.dataset.id
+    // // find matching meme object
+    // let foundMeme = this.memes.find((meme) => meme.id == event.target.dataset.id)
+    // foundMeme.rating += 1;
+    // let options = {
+    //   method: 'PATCH',
+    //   body: JSON.stringify( {meme: foundMeme} ),
+    //   headers: {
+    //     "Content-Type": 'application/json',
+    //     Accept: 'application/json'
+    //   }
+    // }
+    //
+    // fetch(patchUrl, options)
+    //   .then(res => res.json())
+    //   .then(json => {
+    //     this.fetchMemes()
+    // })
+  }
+
 
   newMemeButtonEventListener() {
     let newMeme = document.getElementById('new-meme');

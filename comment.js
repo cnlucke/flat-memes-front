@@ -1,9 +1,9 @@
 class Comment {
-  constructor({id, text, rating, meme_id, created_at}) {
+  constructor({id, text, rating, meme, created_at}) {
     this.id = id;
     this.text = text;
     this.rating = rating;
-    this.meme_id = meme_id;
+    this.meme = meme
     this.created_at = new Date(created_at);
   }
 
@@ -12,7 +12,7 @@ class Comment {
     commentString += '<div class="content">'
     commentString += '<div class="metadata">'
     commentString += `<div class='rating'><i class="check icon"></i> ${this.rating} likes</div>`
-    commentString += `<i class="left comment like icon" data-id="${this.id}"></i>`
+    commentString += `<i class="left comment like icon" data-id="${this.id}" data-meme="${this.meme.id}"></i>`
     commentString += `<div class='date'>${this.formatDate(this.created_at)}</div>`
     commentString += '</div>' //close metadata
     commentString += `<div class='text'>${this.text}</div>`
