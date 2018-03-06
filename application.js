@@ -3,8 +3,13 @@ class App {
     this.memeContainer = document.getElementById('meme-container')
     this.memeUrl = 'http://localhost:3000/api/v1/memes'
     this.fetchMemes()
-    this.newMemeEventListener();
-    this.memes = []
+    this.buttonEventListeners();
+    this.memes = [];
+  }
+
+  buttonEventListeners() {
+    this.newMemeButtonEventListener();
+    this.freshButtonEventListener();
   }
 
   fetchMemes() {
@@ -94,7 +99,7 @@ class App {
       .then(json => console.log(json))
   }
 
-  newMemeEventListener() {
+  newMemeButtonEventListener() {
     let newMeme = document.getElementById('new-meme');
     newMeme.addEventListener('click', () => {
       this.removeActiveClassFromAllButtons();
@@ -128,25 +133,40 @@ class App {
   }
 
   postNewMemeToApi(title, image_url, text) {
+    let memeObj = {"title": title, "image_url": image_url, "text": text, "rating": 0};
     let options = {
       method: 'POST',
       headers: {
         "content-type": "application/json",
         accept: "application/json"
       },
-      body: JSON.stringify({"meme": {"title": title, "image_url": image_url, "text": text, "rating": 0}})
+      body: JSON.stringify({"meme": memeObj})
     }
     fetch('http://localhost:3000/api/v1/memes', options)
-      .then(res => res.json())
-      .then(json => console.log(json));
+      .then((res) => this.renderFreshAfterPostToApi());
+  }
+
+  renderFreshAfterPostToApi() {
+    this.removeActiveClassFromAllButtons();
+    document.getElementById('fresh').classList.add('active');
+    this.memeContainer.innerHTML = '';
+    this.fetchMemes();
+  }
+
+  freshButtonEventListener() {
+    let fresh = document.getElementById('fresh');
+    fresh.addEventListener('click', () => {
+      this.removeActiveClassFromAllButtons();
+      fresh.classList.add('active');
+      this.memeContainer.innerHTML = '';
+      this.createMemes(this.memes);
+    });
   }
 
   removeActiveClassFromAllButtons() {
-    let home = document.getElementById('home');
     let top = document.getElementById('top');
     let fresh = document.getElementById('fresh');
     let newMeme = document.getElementById('new-meme');
-    home.classList.remove('active');
     top.classList.remove('active');
     fresh.classList.remove('active');
     newMeme.classList.remove('active');
