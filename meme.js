@@ -5,7 +5,7 @@ class Meme {
     this.image_url = image_url;
     this.text = text;
     this.rating = rating;
-    this.created_at = created_at;
+    this.created_at = new Date(created_at);
     this.comments = comments;
   }
 
@@ -25,7 +25,7 @@ class Meme {
     }
 
     memeString += `<div class="meta">
-                    <span class="date">n minutes ago...</span>
+                    <span class="date">${this.whenPosted()}</span>
                    </div>`
     if (this.text) {
       memeString += `<div class="description">${this.text}</div>`
@@ -46,17 +46,32 @@ class Meme {
     return memeString
   }
 
-  createComments() {
-    let commentString = ''
-    this.comments.forEach(commentData => {
-      let comment = new Comment(commentData)
-      commentString += comment.render()
-    })
-    return commentString
+//   createComments() {
+//     let commentString = ''
+//     this.comments.forEach(commentData => {
+//       let comment = new Comment(commentData)
+//       commentString += comment.render()
+//     })
+//     return commentString
+//   }
+//
+// }
+
+  whenPosted() {
+    const now = new Date()
+    let diff = now - this.created_at
+    let minutesSincePosted = Math.floor(diff/1000/60)
+    if (minutesSincePosted < 60) {
+      return minutesSincePosted + 'm'
+    } else if (minutesSincePosted < (60 * 24)) {
+      return Math.floor(minutesSincePosted / 60) + 'h'
+    }
+    else {
+      let dateArray = this.created_at.toString().split(' ')
+      return dateArray[1] + ' ' + parseInt(dateArray[2])
+    }
   }
-
 }
-
 // var hours = Math.abs(date1 - date2) / 36e5;
 
 
