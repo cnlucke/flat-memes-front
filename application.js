@@ -19,12 +19,26 @@ class App {
       this.memes.push(meme);
     })
     this.displayMemes()
+    this.addButtonListeners()
   }
 
   displayMemes() {
     this.memeContainer.innerHTML = this.memes.map((meme) => meme.render()).join('')
   }
 
+  addButtonListeners() {
+    let seeButtons = document.querySelectorAll('.button')
+    seeButtons.forEach(button => {
+      button.addEventListener('click', event => {
+        let commentContainer = event.target.nextElementSibling
+        if(commentContainer.style.display === 'block') {
+          commentContainer.style.display = 'none'
+        } else {
+          commentContainer.style.display = 'block'
+        }
+      })
+    })
+  }
   newMemeEventListener() {
     let newMeme = document.getElementById('new-meme');
     newMeme.addEventListener('click', () => {
