@@ -3,7 +3,7 @@ class App {
     this.memeContainer = document.getElementById('meme-container')
     this.memeUrl = 'http://localhost:3000/api/v1/memes'
     this.fetchMemes()
-    this.newMemeButtonEventListener();
+    this.newMemeEventListener();
     this.memes = []
   }
 
