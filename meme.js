@@ -46,16 +46,15 @@ class Meme {
     return memeString
   }
 
-//   createComments() {
-//     let commentString = ''
-//     this.comments.forEach(commentData => {
-//       let comment = new Comment(commentData)
-//       commentString += comment.render()
-//     })
-//     return commentString
-//   }
-//
-// }
+  createComments() {
+    let commentString = ''
+    this.comments.forEach(commentData => {
+      let comment = new Comment(commentData)
+      commentString += comment.render()
+    })
+    return commentString
+  }
+
 
   whenPosted() {
     const now = new Date()
