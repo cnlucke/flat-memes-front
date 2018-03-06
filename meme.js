@@ -31,10 +31,12 @@ class Meme {
     memeString += `</div>` //closing content div
     memeString += `<div class="extra content">
         <a>
-          <i class="user icon"></i>
+          <i class="like icon"></i>
           Upvotes: ${this.rating}
         </a>
-      </div>`
+      </div>
+      <a href="#" class="see-comments" data-id="${this.id}">See Comments</a>
+      <div class="comment-container" style="visibility:hidden"></div>`
     return memeString
   }
 }
