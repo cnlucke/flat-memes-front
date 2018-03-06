@@ -10,7 +10,7 @@ class Meme {
   }
 
   render() {
-    let memeString = `<div class="meme ui card">`
+    let memeString = `<div class="meme ui fluid card">`
     if (this.image_url) {
       memeString += `<div class="image">
                       <img src="${this.image_url}">
@@ -53,6 +53,10 @@ class Meme {
       commentString += comment.render()
     })
     return commentString
+  }
+
+  renderCommentForm() {
+    let form;
   }
 
 
