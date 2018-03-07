@@ -55,11 +55,9 @@ class App {
   freshButtonEventListener() {
     let fresh = document.getElementById('fresh');
     fresh.classList.add('active');
-
     fresh.addEventListener('click', () => {
       this.removeActiveClassFromAllButtons();
       fresh.classList.add('active');
-      console.log(fresh)
       this.memeContainer.innerHTML = '';
       this.createMemes(this.memes);
     });
@@ -108,7 +106,7 @@ class App {
     this.memeContainer.innerHTML = this.memes.map(meme => {
       return meme.render()
     }).join('')
-    
+
     this.memes.forEach(meme => {
       meme.seeMoreListener()
       meme.newCommentListener()
