@@ -12,37 +12,11 @@ class App {
   }
 
   seeMoreListeners() {
-    let seeButtons = document.querySelectorAll('.see-more')
-    seeButtons.forEach(button => {
-      button.addEventListener('click', event => {
-        const seeCommentsNode = event.target.childNodes[1]
-        if (seeCommentsNode.classList.contains('add')) {
-          seeCommentsNode.classList.replace('add', 'minus')
-          event.target.childNodes[2].nodeValue = "Close Comments"
-        } else {
-          seeCommentsNode.classList.replace('minus', 'add')
-          event.target.childNodes[2].nodeValue = "See Comments"
-        }
-        let commentContainer = document.getElementById(`${event.target.dataset.id}`)
-        if(commentContainer.style.display === 'block') {
-          commentContainer.style.display = 'none'
-        } else {
-          commentContainer.style.display = 'block'
-        }
-      })
-    })
+    // moved to meme.js
   }
 
   addCommentListeners() {
-    let buttons = document.querySelectorAll('.new-comment')
-    buttons.forEach(button => {
-      button.addEventListener('click', event => {
-        let commentText = event.target.previousElementSibling.firstChild
-        let id = event.target.dataset.id
-        this.postComment(commentText.value, id)
-        commentText.value = ""
-      })
-    })
+    // moved to meme.js
   }
 
   newMemeButtonEventListener() {
@@ -136,8 +110,11 @@ class App {
     for(let i=0; i < memeLikeButtons.length; i++) {
       memeLikeButtons[i].addEventListener('click', (event) => this.incrementMemeLikes(event))
     }
-    this.seeMoreListeners()
-    this.addCommentListeners()
+    this.memes.forEach(meme => {
+      meme.seeMoreListener()
+      meme.newCommentListener()
+      meme.commentListeners()
+    })
   }
 
 
