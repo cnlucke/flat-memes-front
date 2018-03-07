@@ -106,14 +106,12 @@ class App {
     this.memeContainer.innerHTML = this.memes.map(meme => {
       return meme.render()
     }).join('')
-    const memeLikeButtons = document.querySelectorAll(".meme.like")
-    for(let i=0; i < memeLikeButtons.length; i++) {
-      memeLikeButtons[i].addEventListener('click', (event) => this.incrementMemeLikes(event))
-    }
+    
     this.memes.forEach(meme => {
       meme.seeMoreListener()
       meme.newCommentListener()
       meme.commentListeners()
+      meme.addLikeListener()
     })
   }
 
