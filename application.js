@@ -2,14 +2,11 @@ class App {
   constructor() {
     this.memeContainer = document.getElementById('meme-container')
     this.memeUrl = 'http://localhost:3000/api/v1/memes'
-    this.fetchMemes()
-    this.buttonEventListeners();
     this.memes = [];
   }
   // **** EVENT LISTENERS *****
   buttonEventListeners() {
     this.newMemeButtonEventListener();
-    console.log(this.memeContainer)
     this.freshButtonEventListener();
     this.topButtonEventListener();
   }
