@@ -207,14 +207,9 @@ class App {
   addNewComment(json, memeId) {
     //find parent meme object using memeId
     const parent = this.memes.find((meme) => meme.id == memeId)
-    //push new comment into parent comments array
-    // this.id = id;
-    // this.text = text;
-    // this.rating = rating;
-    // this.meme_id = meme_id
-    // this.created_at = new Date(created_at);
-
+    // creating new comment with each field because mass assignment with json object adds meme object
     const newComment = new Comment({id: json.id, text: json.text, rating: json.rating, meme_id: json.meme.id, created_at: json.created_at})
+    //push new comment into parent comments array
     parent.comments.push(newComment)
     //render comments and replace parents' comment container
     const parentCommentContainer = document.getElementById(`${memeId}`)
