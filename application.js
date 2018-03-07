@@ -26,31 +26,90 @@ class App {
       newMeme.classList.add('active');
       this.memeContainer.innerHTML = '';
       this.memeContainer.innerHTML += `<form id="new-meme-form" class="ui form">
-      <div class="sixteen wide field form-field">
+      <div class="field form-field">
       <label>Meme Title:</label>
       <input type="text" placeholder="Title...">
       </div>
-      <div class="sixteen wide field form-field">
+      <div class="field image-field form-field">
       <label>Image URL:</label>
-      <input type="text" placeholder="Image URL...">
+      <input id="imageInput" type="text" placeholder="Image URL...">
       </div>
-      <div class="sixteen wide field form-field">
+      <div class="field form-field">
       <label>Text:</label>
       <textarea></textarea>
       </div>
-      <button class="ui button" type="submit">Submit</button>
+      <button class="ui button" type="submit">Preview</button>
       </form>`;
-      this.newMemeFormSubmissionListener();
+      this.memePreviewListener();
     });
   }
 
-  newMemeFormSubmissionListener() {
-    let newMeme = document.getElementById('new-meme-form')
+  memePreviewListener() {
+    let newMeme = document.getElementById('new-meme-form');
     newMeme.addEventListener('submit', (event) => {
       event.preventDefault();
-      this.postNewMemeToApi(newMeme[0].value, newMeme[1].value, newMeme[2].value);
+      this.memeContainer.innerHTML = '';
+      this.memeContainer.innerHTML += this.renderMemePreview(newMeme[0].value, newMeme[1].value, newMeme[2].value);
+      this.previewMemePostSubmissionListener();
+      this.editMemePreviewListener();
+    });
+  }
+
+  previewMemePostSubmissionListener() {
+    // Cristy: added logic to handle blank fields
+    let title = "";
+    let image_url = "";
+    let text = "";
+    if (document.getElementById('preview-title')) {
+      title = document.getElementById('preview-title').innerText;
+    }
+    if (document.getElementById('preview-image-source')) {
+      image_url = document.getElementById('preview-image-source').src;
+    }
+    if (document.getElementById('preview-text')) {
+      text = document.getElementById('preview-text').innerText;
+    }
+    document.getElementById('meme-submission').addEventListener('click', (event) => {
+    this.postNewMemeToApi(title, image_url, text);
     })
   }
+
+  editMemePreviewListener() {
+    // Cristy: added logic to handle blank fields
+    let title = "";
+    let image_url = "";
+    let text = "";
+    if (document.getElementById('preview-title')) {
+      title = document.getElementById('preview-title').innerText;
+    }
+    if (document.getElementById('preview-image-source')) {
+      image_url = document.getElementById('preview-image-source').src;
+    }
+    if (document.getElementById('preview-text')) {
+      text = document.getElementById('preview-text').innerText;
+    }
+    document.getElementById('edit-meme').addEventListener('click', (event) => {
+      this.memeContainer.innerHTML = '';
+      this.memeContainer.innerHTML += `<form id="new-meme-form" class="ui form">
+      <div class="field form-field">
+      <label>Meme Title:</label>
+      <input type="text" value='${title}'>
+      </div>
+      <div class="field image-field form-field">
+      <label>Image URL:</label>
+      <input id="imageInput" type="text" value='${image_url}'>
+      </div>
+      <div class="field form-field">
+      <label>Text:</label>
+      <textarea>${text}</textarea>
+      </div>
+      <button class="ui button" type="submit">Preview</button>
+      </form>`;
+      this.memePreviewListener();
+    })
+  }
+
+// Torre: deleted newMemeFormSubmissionListener on purpose
 
   freshButtonEventListener() {
     let fresh = document.getElementById('fresh');
@@ -128,6 +187,29 @@ class App {
     }
     fetch('http://localhost:3000/api/v1/memes', options)
     .then((res) => this.renderFreshAfterPostToApi());
+  }
+
+  renderMemePreview(title, image_url, text) {
+    let memePreviewString = `<div class="meme ui fluid card">`
+    if (image_url) {
+      memePreviewString += `<div class="image">
+                      <img id="preview-image-source" src="${image_url}">
+                     </div>`
+    }
+    memePreviewString += `<div class="content">`
+
+    if (title) {
+      memePreviewString += `<a id="preview-title" class="header">${title}</a>`
+    }
+    if (text) {
+      memePreviewString += `<div id="preview-text" class="description">${text}</div>`
+    }
+    memePreviewString += `</div></div><div class="ui buttons">
+      <button class="ui button big positive" id="meme-submission">Post</button>
+      <div class="or"></div>
+      <button class="ui button big" id="edit-meme">Edit</button>
+      </div>`
+    return memePreviewString
   }
 
   // ***** HANDLE COMMENTS *****

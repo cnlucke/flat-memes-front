@@ -1,15 +1,10 @@
-:root{
-  var-DarkGreen:#2c6d3b;
-  --main-color: #06c;
-}
-
-h1#foo  {
-  color: var(DarkGreen);
-}
-
 body, html {
   margin:0;
   padding:0;
+}
+
+#button {
+  background-color: #afc2cf;
 }
 
 #meme-container {
@@ -25,7 +20,7 @@ body, html {
 
 
 #main {
-  background-color: #e6ecf0;
+  background-color: #cfdbe2;
   margin-top: 0px;
   width:100%;
   align: center;
@@ -47,33 +42,42 @@ body, html {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-variant: normal;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 26.4px;
-  color: #505050;
+  /* color: white; */
   margin: 0px;
 }
 
-#jumbotron {
-  background-color: #9fb6c6;
+#fresh {
+  background-color: #409494;
 }
 
 #fresh.active {
-  background-color: #2c6d3b;
+  background-color: #238876;
   border: solid;
   border-color: black;
   border-width: thin;
 }
 
 #top.active {
-  background-color: #245175;
+  background-color: #306A90;
   border: solid;
   border-color: black;
   border-width: thin;
 }
 
 #new-meme.active {
-  background-color: #ac4820;
+  background-color: #c25024;
   border: solid;
   border-color: black;
   border-width: thin;
+}
+
+.landing-image {
+    background-image: url('https://i.pinimg.com/564x/9e/fe/f2/9efef2c49ab8fb81f62286ecba5deb37--laminate-countertops-abstract-pattern.jpg') !important;
+    /* background-image: url('https://media.istockphoto.com/vectors/smiling-pattern-vector-id525433359?k=6&m=525433359&s=612x612&w=0&h=XirHYP5vVbK3rlGwNbL3U5MqcCFHvI67HSnOQ1ylfsg=') !important; */
+    background-size: cover !important;
+}
+
+.page-image {
 }
