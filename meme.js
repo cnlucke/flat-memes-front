@@ -29,7 +29,6 @@ class Meme {
     if (this.text) {
       memeString += `<div class="description">${this.text}</div>`
     }
-    let comments = this.createComments() + this.renderCommentForm();
     memeString += `</div>` //closing content div
     memeString += `<div class="extra content">
         <a>
@@ -42,17 +41,13 @@ class Meme {
           See Comments
       </div>
       </div>
-      <div class="comment-container ui comments" style="display:none" id="${this.id}">${comments}</div>`
+      <div class="comment-container ui comments" style="display:none"
+        id="${this.id}">${this.renderComments()}</div>`
     return memeString
   }
 
-  createComments() {
-    let commentString = ''
-    this.comments.forEach(commentData => {
-      let comment = new Comment(commentData)
-      commentString += comment.render()
-    })
-    return commentString
+  renderComments() {
+    return this.comments.map((comment) => comment.render()).join(' ') + this.renderCommentForm()
   }
 
   renderCommentForm() {
@@ -63,6 +58,9 @@ class Meme {
     return formString
   }
 
+  sortComments() {
+    this.comments.sort((a,b) => b.rating - a.rating)
+  }
 
   whenPosted() {
     const now = new Date()

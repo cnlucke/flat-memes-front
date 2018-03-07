@@ -34,7 +34,7 @@ class App {
     this.memes.sort((a,b) => {
       return new Date(b.created_at) - new Date(a.created_at)
     })
-    this.sortComments();
+    this.memes.forEach(meme => meme.sortComments())
     this.displayMemes();
   }
 
@@ -81,11 +81,13 @@ class App {
     seeButtons.forEach(button => {
       button.addEventListener('click', event => {
         let commentContainer = document.getElementById(`${event.target.dataset.id}`)
-        const addCommentNode = event.target.childNodes[1]
-        if (addCommentNode.classList.contains('add')) {
-          addCommentNode.classList.replace('add', 'minus')
+        const seeCommentsNode = event.target.childNodes[1]
+        if (seeCommentsNode.classList.contains('add')) {
+          seeCommentsNode.classList.replace('add', 'minus')
+          event.target.childNodes[2].nodeValue = "Close Comments"
         } else {
-          addCommentNode.classList.replace('minus', 'add')
+          seeCommentsNode.classList.replace('minus', 'add')
+          event.target.childNodes[2].nodeValue = "See Comments"
         }
         if(commentContainer.style.display === 'block') {
           commentContainer.style.display = 'none'
@@ -165,6 +167,10 @@ class App {
       .then(json => {
         ratingNode.innerHTML = '<i class="check icon"></i>' + foundComment.rating + ' like'
         if (foundComment.rating > 1) ratingNode.innerHTML += 's'
+        foundMeme.sortComments()
+        const newCommentsHTML = foundMeme.renderComments()
+        document.getElementById(`${memeId}`).innerHTML = newCommentsHTML;
+        this.addCommentLikeListeners()
     })
   }
 
@@ -241,18 +247,11 @@ class App {
       this.memes.sort((a,b) => {
         return b.rating - a.rating
       })
-      this.sortComments();
+      this.memes.forEach(meme => meme.sortComments());
       this.displayMemes();
     })
   }
 
-  sortComments() {
-    this.memes.forEach(meme => {
-      meme.comments.sort((a,b) => {
-      return b.rating - a.rating
-      })
-    })
-  }
   removeActiveClassFromAllButtons() {
     let top = document.getElementById('top');
     let fresh = document.getElementById('fresh');
