@@ -7,6 +7,40 @@ class Meme {
     this.rating = rating;
     this.created_at = new Date(created_at);
     this.comments = comments;
+    this.baseUrl = 'http://localhost:3000/api/v1/memes/'+this.id
+  }
+
+  postComment(text) {
+    let options = {
+      method:'POST',
+      headers: {
+        'Content-Type':'application/json',
+        Accept:'application/json'
+      },
+      body: JSON.stringify({text:text, rating:0, meme_id:this.id})
+    }
+    fetch(`${this.baseUrl}/comments`, options)
+      .then(res => res.json())
+      .then(json => {
+        this.addNewComment(json)
+      })
+  }
+
+  commentListeners() {
+    this.comments.forEach(comment => comment.addLikeListener())
+  }
+
+  addNewComment(json) {
+    // creating new comment with each field because mass assignment with json object adds meme object
+    const newComment = new Comment({id: json.id, text: json.text, rating: json.rating, meme_id: json.meme.id, created_at: json.created_at})
+    //push new comment into parent comments array
+    this.comments.push(newComment)
+    console.log(newComment)
+    //render comments and replace parents' comment container
+    const parentCommentContainer = document.getElementById(`${this.id}`)
+    parentCommentContainer.innerHTML = this.renderComments();
+    newComment.addLikeListener()
+    // this.addCommentLikeListeners()
   }
 
   render() {
