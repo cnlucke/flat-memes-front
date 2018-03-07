@@ -56,18 +56,36 @@ class App {
   }
 
   previewMemePostSubmissionListener() {
-    let title = document.getElementById('preview-title').innerText;
-    let image_url = document.getElementById('preview-image-source').src;
-    let text = document.getElementById('preview-text').innerText;
+    let title = "";
+    let image_url = "";
+    let text = "";
+    if (document.getElementById('preview-title')) {
+      title = document.getElementById('preview-title').innerText;
+    }
+    if (document.getElementById('preview-image-source')) {
+      image_url = document.getElementById('preview-image-source').src;
+    }
+    if (document.getElementById('preview-text')) {
+      text = document.getElementById('preview-text').innerText;
+    }
     document.getElementById('meme-submission').addEventListener('click', (event) => {
-      this.postNewMemeToApi(title, image_url, text);
+    this.postNewMemeToApi(title, image_url, text);
     })
   }
 
   editMemePreviewListener() {
-    let title = document.getElementById('preview-title').innerText;
-    let image_url = document.getElementById('preview-image-source').src;
-    let text = document.getElementById('preview-text').innerText;
+    let title = "";
+    let image_url = "";
+    let text = "";
+    if (document.getElementById('preview-title')) {
+      title = document.getElementById('preview-title').innerText;
+    }
+    if (document.getElementById('preview-image-source')) {
+      image_url = document.getElementById('preview-image-source').src;
+    }
+    if (document.getElementById('preview-text')) {
+      text = document.getElementById('preview-text').innerText;
+    }
     document.getElementById('edit-meme').addEventListener('click', (event) => {
       this.memeContainer.innerHTML = '';
       this.memeContainer.innerHTML += `<form id="new-meme-form" class="ui form">
