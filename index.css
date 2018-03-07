@@ -44,23 +44,23 @@ body, html {
   font-variant: normal;
   font-weight: 600;
   line-height: 26.4px;
-  /* color: #505050; */
+  /* color: white; */
   margin: 0px;
 }
 
 #fresh {
-  background-color: #849487;
+  background-color: #409494;
 }
 
 #fresh.active {
-  background-color:  #77887a;
+  background-color: #238876;
   border: solid;
   border-color: black;
   border-width: thin;
 }
 
 #top.active {
-  background-color: #245175;
+  background-color: #306A90;
   border: solid;
   border-color: black;
   border-width: thin;
@@ -75,6 +75,7 @@ body, html {
 
 .landing-image {
     background-image: url('https://i.pinimg.com/564x/9e/fe/f2/9efef2c49ab8fb81f62286ecba5deb37--laminate-countertops-abstract-pattern.jpg') !important;
+    /* background-image: url('https://media.istockphoto.com/vectors/smiling-pattern-vector-id525433359?k=6&m=525433359&s=612x612&w=0&h=XirHYP5vVbK3rlGwNbL3U5MqcCFHvI67HSnOQ1ylfsg=') !important; */
     background-size: cover !important;
 }
 
