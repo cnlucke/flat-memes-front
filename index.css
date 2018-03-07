@@ -1,3 +1,7 @@
+$gcolor: #49b562;
+$gdark: darken($fresh_color,30%);
+
+
 body, html {
   margin:0;
   padding:0;
@@ -48,6 +52,6 @@ body, html {
   background-color: #9fb6c6;
 }
 
-.lead {
-  color: #505050;
+.button.top.active.green {
+  color: $gdark;
 }

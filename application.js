@@ -54,10 +54,10 @@ class App {
 
   freshButtonEventListener() {
     let fresh = document.getElementById('fresh');
-    console.log(fresh)
     fresh.addEventListener('click', () => {
-      // this.removeActiveClassFromAllButtons();
-      // fresh.classList.add('active');
+      this.removeActiveClassFromAllButtons();
+      fresh.classList.add('active');
+      console.log(fresh)
       this.memeContainer.innerHTML = '';
       this.createMemes(this.memes);
     });
@@ -156,8 +156,6 @@ class App {
   //     let container = document.getElementById('image-field');
   //     let imageInput = document.getElementById('imagePreview');
   //     container.innerHTML += `<br><img class="ui medium image" src="${pastedData}">`
-  //     console.log(pastedData);
-  //     console.log(imageInput.placeholder);
   //     imageInput.value += pastedData;
   //   });
   // }
