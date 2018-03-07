@@ -65,9 +65,9 @@ class App {
       <label>Meme Title:</label>
       <input type="text" placeholder="Title...">
       </div>
-      <div class="eight wide field">
+      <div id="image-field" class="eight wide field">
       <label>Image URL:</label>
-      <input type="text" placeholder="Image URL...">
+      <input id="imageInput" type="text" placeholder="Image URL...">
       </div>
       <div class="eight wide field">
       <label>Text:</label>
@@ -76,6 +76,7 @@ class App {
       <button class="ui button" type="submit">Submit</button>
       </form>`;
       this.newMemeFormSubmissionListener();
+      this.imagePreview();
     });
   }
 
@@ -155,6 +156,8 @@ class App {
     // find matching meme object
     let foundMeme = this.memes.find((meme) => meme.id == event.target.dataset.id)
     foundMeme.rating += 1;
+    // turn like icon red
+    event.target.classList.add('red');
     let options = {
       method: 'PATCH',
       body: JSON.stringify( {meme: foundMeme} ),
@@ -269,15 +272,15 @@ class App {
   }
 
   imagePreview() {
-    $("#imagePreview").bind("paste", function(e){
+    $("#imageInput").bind("paste", function(e){
+      e.stopPropagation();
+    e.preventDefault();
       var pastedData = e.originalEvent.clipboardData.getData('text');
       let container = document.getElementById('image-field');
-      let imageInput = document.getElementById('imagePreview');
+      let imageInputField = document.getElementById('imageInput');
+      imageInputField.value = `${pastedData}`
       container.innerHTML += `<br><img class="ui medium image" src="${pastedData}">`
-      console.log(pastedData);
-      console.log(imageInput.placeholder);
-      imageInput.value += pastedData;
-  } );
+    });
   }
 
 }
