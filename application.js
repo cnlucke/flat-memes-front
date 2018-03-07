@@ -62,15 +62,15 @@ class App {
       newMeme.classList.add('active');
       this.memeContainer.innerHTML = '';
       this.memeContainer.innerHTML += `<form id="new-meme-form" class="ui form">
-      <div class="eight wide field form-field">
+      <div class="sixteen wide field form-field">
       <label>Meme Title:</label>
       <input type="text" placeholder="Title...">
       </div>
-      <div class="eight wide field form-field">
+      <div class="sixteen wide field form-field">
       <label>Image URL:</label>
       <input type="text" placeholder="Image URL...">
       </div>
-      <div class="eight wide field form-field">
+      <div class="sixteen wide field form-field">
       <label>Text:</label>
       <textarea></textarea>
       </div>
@@ -157,6 +157,7 @@ class App {
     // find matching meme object
     let foundMeme = this.memes.find((meme) => meme.id == event.target.dataset.id)
     foundMeme.rating += 1;
+    event.target.classList.add('red');
     let options = {
       method: 'PATCH',
       body: JSON.stringify( {meme: foundMeme} ),
@@ -270,16 +271,16 @@ class App {
     newMeme.classList.remove('active');
   }
 
-  imagePreview() {
-    $("#imagePreview").bind("paste", function(e){
-      var pastedData = e.originalEvent.clipboardData.getData('text');
-      let container = document.getElementById('image-field');
-      let imageInput = document.getElementById('imagePreview');
-      container.innerHTML += `<br><img class="ui medium image" src="${pastedData}">`
-      console.log(pastedData);
-      console.log(imageInput.placeholder);
-      imageInput.value += pastedData;
-  } );
-  }
+  // imagePreview() {
+  //   $("#imagePreview").bind("paste", function(e){
+  //     var pastedData = e.originalEvent.clipboardData.getData('text');
+  //     let container = document.getElementById('image-field');
+  //     let imageInput = document.getElementById('imagePreview');
+  //     container.innerHTML += `<br><img class="ui medium image" src="${pastedData}">`
+  //     console.log(pastedData);
+  //     console.log(imageInput.placeholder);
+  //     imageInput.value += pastedData;
+  //   });
+  // }
 
 }
