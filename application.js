@@ -7,6 +7,7 @@ class App {
   // **** EVENT LISTENERS *****
   buttonEventListeners() {
     this.newMemeButtonEventListener();
+    console.log(this.memeContainer)
     this.freshButtonEventListener();
     this.topButtonEventListener();
   }
@@ -50,15 +51,15 @@ class App {
       newMeme.classList.add('active');
       this.memeContainer.innerHTML = '';
       this.memeContainer.innerHTML += `<form id="new-meme-form" class="ui form">
-      <div class="eight wide field">
+      <div class="eight wide field form-field">
       <label>Meme Title:</label>
       <input type="text" placeholder="Title...">
       </div>
-      <div class="eight wide field">
+      <div class="eight wide field form-field">
       <label>Image URL:</label>
       <input type="text" placeholder="Image URL...">
       </div>
-      <div class="eight wide field">
+      <div class="eight wide field form-field">
       <label>Text:</label>
       <textarea></textarea>
       </div>
@@ -78,9 +79,10 @@ class App {
 
   freshButtonEventListener() {
     let fresh = document.getElementById('fresh');
+    console.log(fresh)
     fresh.addEventListener('click', () => {
-      this.removeActiveClassFromAllButtons();
-      fresh.classList.add('active');
+      // this.removeActiveClassFromAllButtons();
+      // fresh.classList.add('active');
       this.memeContainer.innerHTML = '';
       this.createMemes(this.memes);
     });

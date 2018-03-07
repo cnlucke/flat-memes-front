@@ -10,10 +10,44 @@ body, html {
   margin:auto;
 }
 
-#main {
-  background-color: #e6ecf0;
+#new-meme-form {
+  margin: auto;
 }
 
-.pointing {
-  text-align: center;
+
+#main {
+  background-color: #e6ecf0;
+  margin-top: 0px;
+  width:100%;
+  align: center;
+}
+
+.ui.message.center {
+  margin-bottom: 0px;
+  width:100%;
+  align: center;
+}
+
+#iron {
+  width:100px;
+  height:100px;"
+}
+
+#header {
+  font-size: 4rem;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 500;
+  line-height: 26.4px;
+  color: #505050;
+  margin: 0px;
+}
+
+#jumbotron {
+  background-color: #9fb6c6;
+}
+
+.lead {
+  color: #505050;
 }
