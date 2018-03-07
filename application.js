@@ -38,7 +38,9 @@ class App {
   }
 
   displayMemes() {
-    this.memeContainer.innerHTML = this.memes.map((meme) => meme.render()).join('')
+    this.memeContainer.innerHTML = this.memes.map(meme => {
+      return meme.render()
+    }).join('')
     const memeLikeButtons = document.querySelectorAll(".meme.like")
     for(let i=0; i < memeLikeButtons.length; i++) {
       memeLikeButtons[i].addEventListener('click', (event) => this.incrementMemeLikes(event))
@@ -66,7 +68,12 @@ class App {
     fetch(patchUrl, options)
       .then(res => res.json())
       .then(json => {
-        this.fetchMemes()
+        const votesNode = event.target.parentNode.nextSibling.childNodes[1]
+        const text = votesNode.innerText.split(' ')
+        const finalText = [text[0], parseInt(text[1]) + 1, text[2]].join(' ')
+        votesNode.innerHTML = '<i class="check icon"></i>' + finalText
+        // console.log(finalText)
+        // this.fetchMemes()
     })
   }
 
@@ -74,7 +81,13 @@ class App {
     let seeButtons = document.querySelectorAll('.see-more')
     seeButtons.forEach(button => {
       button.addEventListener('click', event => {
-        let commentContainer = event.target.nextElementSibling
+        let commentContainer = document.getElementById(`${event.target.dataset.id}`)
+        const addCommentNode = event.target.childNodes[1]
+        if (addCommentNode.classList.contains('add')) {
+          addCommentNode.classList.replace('add', 'minus')
+        } else {
+          addCommentNode.classList.replace('minus', 'add')
+        }
         if(commentContainer.style.display === 'block') {
           commentContainer.style.display = 'none'
         } else {
