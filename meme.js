@@ -10,6 +10,64 @@ class Meme {
     this.baseUrl = 'http://localhost:3000/api/v1/memes/'+this.id
   }
 
+  addLikeListener() {
+    const memeDiv = document.getElementById('meme-'+this.id)
+    const likeButton = memeDiv.querySelector('i')
+    likeButton.addEventListener('click', event => this.incrementMemeLikes(event))
+  }
+
+  incrementMemeLikes(event) {
+    this.rating += 1;
+    event.target.classList.add('red');
+    let options = {
+      method: 'PATCH',
+      body: JSON.stringify( {meme: this} ),
+      headers: {
+        "Content-Type": 'application/json',
+        Accept: 'application/json'
+      }
+    }
+    fetch(this.baseUrl, options)
+      .then(res => res.json())
+      .then(json => {
+        // update vote count in place
+        const votesNode = event.target.parentNode.nextSibling.childNodes[1]
+        const text = votesNode.innerText.split(' ')
+        const finalText = [text[0], parseInt(text[1]) + 1, text[2]].join(' ')
+        votesNode.innerHTML = '<i class="check icon"></i>' + finalText
+    })
+  }
+
+  seeMoreListener() {
+    const memeDiv = document.getElementById('meme-'+this.id)
+    const seeButton = memeDiv.querySelector('.see-more')
+    const commentContainer = memeDiv.nextElementSibling
+    seeButton.addEventListener('click', event => {
+      const seeCommentsNode = event.target.childNodes[1]
+      if(commentContainer.style.display === 'block') {
+        commentContainer.style.display = 'none'
+        seeCommentsNode.classList.replace('minus', 'add')
+        event.target.childNodes[2].nodeValue = "See Comments"
+      } else {
+        commentContainer.style.display = 'block'
+        seeCommentsNode.classList.replace('add', 'minus')
+        event.target.childNodes[2].nodeValue = "Close Comments"
+      }
+    })
+
+  }
+
+  newCommentListener() {
+    const memeDiv = document.getElementById('meme-'+this.id)
+    const commentContainer = memeDiv.nextElementSibling
+    const button = commentContainer.querySelector('.new-comment')
+    button.addEventListener('click', event => {
+      let commentText = event.target.previousElementSibling.firstChild
+      this.postComment(commentText.value)
+      commentText.value = ""
+    })
+  }
+
   postComment(text) {
     let options = {
       method:'POST',
@@ -35,7 +93,6 @@ class Meme {
     const newComment = new Comment({id: json.id, text: json.text, rating: json.rating, meme_id: json.meme.id, created_at: json.created_at})
     //push new comment into parent comments array
     this.comments.push(newComment)
-    console.log(newComment)
     //render comments and replace parents' comment container
     const parentCommentContainer = document.getElementById(`${this.id}`)
     parentCommentContainer.innerHTML = this.renderComments();
@@ -44,7 +101,7 @@ class Meme {
   }
 
   render() {
-    let memeString = `<div class="meme ui fluid card">`
+    let memeString = `<div class="meme ui fluid card" id="meme-${this.id}">`
     if (this.image_url) {
       memeString += `<div class="image">
                       <img src="${this.image_url}">

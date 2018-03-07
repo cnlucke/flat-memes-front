@@ -1,3 +1,12 @@
+:root{
+  var-DarkGreen:#2c6d3b;
+  --main-color: #06c;
+}
+
+h1#foo  {
+  color: var(DarkGreen);
+}
+
 body, html {
   margin:0;
   padding:0;
@@ -48,6 +57,23 @@ body, html {
   background-color: #9fb6c6;
 }
 
-.lead {
-  color: #505050;
+#fresh.active {
+  background-color: #2c6d3b;
+  border: solid;
+  border-color: black;
+  border-width: thin;
+}
+
+#top.active {
+  background-color: #245175;
+  border: solid;
+  border-color: black;
+  border-width: thin;
+}
+
+#new-meme.active {
+  background-color: #ac4820;
+  border: solid;
+  border-color: black;
+  border-width: thin;
 }

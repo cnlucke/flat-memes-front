@@ -14,7 +14,6 @@ class Comment {
   }
 
   incrementCommentLikes(event) {
-    console.dir(event.target)
     const ratingNode = event.target.previousSibling
     const memeId = this.meme_id
     const commentId = event.target.dataset.id
@@ -37,8 +36,6 @@ class Comment {
         }
     })
   }
-
-
 
   render() {
     let commentString = `<div class="comment" id="comment-${this.id}">`
