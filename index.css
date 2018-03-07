@@ -13,3 +13,7 @@ body, html {
 #main {
   background-color: #e6ecf0;
 }
+
+.pointing {
+  text-align: center;
+}
