@@ -56,6 +56,7 @@ class App {
   }
 
   previewMemePostSubmissionListener() {
+    // Cristy: added logic to handle blank fields
     let title = "";
     let image_url = "";
     let text = "";
@@ -74,6 +75,7 @@ class App {
   }
 
   editMemePreviewListener() {
+    // Cristy: added logic to handle blank fields
     let title = "";
     let image_url = "";
     let text = "";
