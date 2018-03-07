@@ -54,6 +54,8 @@ class App {
 
   freshButtonEventListener() {
     let fresh = document.getElementById('fresh');
+    fresh.classList.add('active');
+
     fresh.addEventListener('click', () => {
       this.removeActiveClassFromAllButtons();
       fresh.classList.add('active');
