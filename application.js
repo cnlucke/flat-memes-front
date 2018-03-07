@@ -2,6 +2,8 @@ class App {
   constructor() {
     this.memeContainer = document.getElementById('meme-container')
     this.memeUrl = 'http://localhost:3000/api/v1/memes'
+    this.fetchMemes()
+    this.buttonEventListeners();
     this.memes = [];
   }
   // **** EVENT LISTENERS *****
@@ -13,19 +15,22 @@ class App {
   }
 
   seeMoreListeners() {
-    const seeButtons = document.querySelectorAll('.see-more')
+    let seeButtons = document.querySelectorAll('.see-more')
     seeButtons.forEach(button => {
       button.addEventListener('click', event => {
         const seeCommentsNode = event.target.childNodes[1]
-        const commentContainer = document.getElementById(`${event.target.dataset.id}`)
-        if(commentContainer.style.display === 'block') {
-          commentContainer.style.display = 'none'
-          seeCommentsNode.classList.replace('minus', 'add')
-          event.target.childNodes[2].nodeValue = "See Comments"
-        } else {
-          commentContainer.style.display = 'block'
+        if (seeCommentsNode.classList.contains('add')) {
           seeCommentsNode.classList.replace('add', 'minus')
           event.target.childNodes[2].nodeValue = "Close Comments"
+        } else {
+          seeCommentsNode.classList.replace('minus', 'add')
+          event.target.childNodes[2].nodeValue = "See Comments"
+        }
+        let commentContainer = document.getElementById(`${event.target.dataset.id}`)
+        if(commentContainer.style.display === 'block') {
+          commentContainer.style.display = 'none'
+        } else {
+          commentContainer.style.display = 'block'
         }
       })
     })
@@ -36,12 +41,18 @@ class App {
     buttons.forEach(button => {
       button.addEventListener('click', event => {
         let commentText = event.target.previousElementSibling.firstChild
-        let memeId = event.target.dataset.id
-        const foundMeme = this.memes.find((meme) => meme.id == memeId)
-        foundMeme.postComment(commentText.value)
+        let id = event.target.dataset.id
+        this.postComment(commentText.value, id)
         commentText.value = ""
       })
     })
+  }
+
+  addCommentLikeListeners() {
+    const commentLikeButtons = document.querySelectorAll(".comment.like")
+    for(let i=0; i < commentLikeButtons.length; i++) {
+      commentLikeButtons[i].addEventListener('click', (event) => this.incrementCommentLikes(event))
+    }
   }
 
   newMemeButtonEventListener() {
@@ -51,15 +62,15 @@ class App {
       newMeme.classList.add('active');
       this.memeContainer.innerHTML = '';
       this.memeContainer.innerHTML += `<form id="new-meme-form" class="ui form">
-      <div class="eight wide field form-field">
+      <div class="sixteen wide field form-field">
       <label>Meme Title:</label>
       <input type="text" placeholder="Title...">
       </div>
-      <div class="eight wide field form-field">
+      <div class="sixteen wide field form-field">
       <label>Image URL:</label>
       <input type="text" placeholder="Image URL...">
       </div>
-      <div class="eight wide field form-field">
+      <div class="sixteen wide field form-field">
       <label>Text:</label>
       <textarea></textarea>
       </div>
@@ -125,7 +136,6 @@ class App {
     })
     this.memes.forEach(meme => meme.sortComments())
     this.displayMemes();
-    this.memes.forEach(meme => meme.commentListeners())
   }
 
   displayMemes() {
@@ -138,7 +148,7 @@ class App {
     }
     this.seeMoreListeners()
     this.addCommentListeners()
-    // this.addCommentLikeListeners()
+    this.addCommentLikeListeners()
   }
 
   incrementMemeLikes(event) {
@@ -147,6 +157,7 @@ class App {
     // find matching meme object
     let foundMeme = this.memes.find((meme) => meme.id == event.target.dataset.id)
     foundMeme.rating += 1;
+    event.target.classList.add('red');
     let options = {
       method: 'PATCH',
       body: JSON.stringify( {meme: foundMeme} ),
@@ -182,9 +193,66 @@ class App {
   }
 
   // ***** HANDLE COMMENTS *****
+  postComment(text, memeId) {
+    let options = {
+      method:'POST',
+      headers: {
+        'Content-Type':'application/json',
+        Accept:'application/json'
+      },
+      body: JSON.stringify({text:text, rating:0, meme_id:memeId})
+    }
+    fetch(`${this.memeUrl}/${memeId}/comments`, options)
+      .then(res => res.json())
+      .then(json => this.addNewComment(json, memeId))
+  }
 
-  
+    addNewComment(json, memeId) {
+      //find parent meme object using memeId
+      const parent = this.memes.find((meme) => meme.id == memeId)
+      // creating new comment with each field because mass assignment with json object adds meme object
+      const newComment = new Comment({id: json.id, text: json.text, rating: json.rating, meme_id: json.meme.id, created_at: json.created_at})
+      //push new comment into parent comments array
+      parent.comments.push(newComment)
+      //render comments and replace parents' comment container
+      const parentCommentContainer = document.getElementById(`${memeId}`)
+      parentCommentContainer.innerHTML = parent.renderComments();
+      this.addCommentListeners()
+      this.addCommentLikeListeners()
+    }
 
+  incrementCommentLikes(event) {
+    // /api/v1/memes/:meme_id/comments/:id
+    const ratingNode = event.target.previousSibling
+    const memeId = event.target.dataset.meme
+    const commentId = event.target.dataset.id
+    const patchUrl = this.memeUrl + '/' + memeId + '/comments/' + commentId
+    //find matching meme object
+    let foundMeme = this.memes.find((meme) => meme.id == memeId)
+    //now find comment object
+    let foundComment = foundMeme.comments.find((comment) => comment.id == commentId)
+    foundComment.rating += 1;
+    let options = {
+      method: 'PATCH',
+      body: JSON.stringify( {comment: foundComment} ),
+      headers: {
+        "Content-Type": 'application/json',
+        Accept: 'application/json'
+      }
+    }
+
+    fetch(patchUrl, options)
+      .then(res => res.json())
+      .then(json => {
+        ratingNode.innerHTML = '<i class="check icon"></i>' + foundComment.rating + ' like'
+        if (foundComment.rating > 1) ratingNode.innerHTML += 's'
+        foundMeme.sortComments()
+        const newCommentsHTML = foundMeme.renderComments()
+        document.getElementById(`${memeId}`).innerHTML = newCommentsHTML;
+        this.addCommentListeners()
+        this.addCommentLikeListeners()
+    })
+  }
 
   // ***** HANDLE PAGE *****
   renderFreshAfterPostToApi() {
@@ -202,5 +270,17 @@ class App {
     fresh.classList.remove('active');
     newMeme.classList.remove('active');
   }
+
+  // imagePreview() {
+  //   $("#imagePreview").bind("paste", function(e){
+  //     var pastedData = e.originalEvent.clipboardData.getData('text');
+  //     let container = document.getElementById('image-field');
+  //     let imageInput = document.getElementById('imagePreview');
+  //     container.innerHTML += `<br><img class="ui medium image" src="${pastedData}">`
+  //     console.log(pastedData);
+  //     console.log(imageInput.placeholder);
+  //     imageInput.value += pastedData;
+  //   });
+  // }
 
 }
