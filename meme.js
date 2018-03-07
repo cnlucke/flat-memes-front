@@ -35,7 +35,6 @@ class Meme {
     const newComment = new Comment({id: json.id, text: json.text, rating: json.rating, meme_id: json.meme.id, created_at: json.created_at})
     //push new comment into parent comments array
     this.comments.push(newComment)
-    console.log(newComment)
     //render comments and replace parents' comment container
     const parentCommentContainer = document.getElementById(`${this.id}`)
     parentCommentContainer.innerHTML = this.renderComments();
