@@ -10,6 +10,34 @@ class Meme {
     this.baseUrl = 'http://localhost:3000/api/v1/memes/'+this.id
   }
 
+  addLikeListener() {
+    const memeDiv = document.getElementById('meme-'+this.id)
+    const likeButton = memeDiv.querySelector('i')
+    likeButton.addEventListener('click', event => this.incrementMemeLikes(event))
+  }
+
+  incrementMemeLikes(event) {
+    this.rating += 1;
+    event.target.classList.add('red');
+    let options = {
+      method: 'PATCH',
+      body: JSON.stringify( {meme: this} ),
+      headers: {
+        "Content-Type": 'application/json',
+        Accept: 'application/json'
+      }
+    }
+    fetch(this.baseUrl, options)
+      .then(res => res.json())
+      .then(json => {
+        // update vote count in place
+        const votesNode = event.target.parentNode.nextSibling.childNodes[1]
+        const text = votesNode.innerText.split(' ')
+        const finalText = [text[0], parseInt(text[1]) + 1, text[2]].join(' ')
+        votesNode.innerHTML = '<i class="check icon"></i>' + finalText
+    })
+  }
+
   seeMoreListener() {
     const memeDiv = document.getElementById('meme-'+this.id)
     const seeButton = memeDiv.querySelector('.see-more')
