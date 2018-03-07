@@ -48,45 +48,61 @@ class App {
     let newMeme = document.getElementById('new-meme-form');
     newMeme.addEventListener('submit', (event) => {
       event.preventDefault();
-      this.memeContainer.innerHTML = '';
-      this.memeContainer.innerHTML += this.renderMemePreview(newMeme[0].value, newMeme[1].value, newMeme[2].value);
-      this.previewMemePostSubmissionListener();
-      this.editMemePreviewListener();
+      if (newMeme[0].value.length > 0 || newMeme[1].value.length > 0 || newMeme[2].value.length > 0) {
+        this.memeContainer.innerHTML = '';
+        this.memeContainer.innerHTML += this.renderMemePreview(newMeme[0].value, newMeme[1].value, newMeme[2].value);
+        this.postMemePreviewListener();
+        this.editMemePreviewListener();
+      } else {
+        alert("At least one field must be entered");
+      }
     });
   }
 
-  previewMemePostSubmissionListener() {
-    let title = document.getElementById('preview-title').innerText;
-    let image_url = document.getElementById('preview-image-source').src;
-    let text = document.getElementById('preview-text').innerText;
+  postMemePreviewListener() {
+    let formSubmission = this.checkIfNewMemeFormSubmissionsAreEmpty();
     document.getElementById('meme-submission').addEventListener('click', (event) => {
-      this.postNewMemeToApi(title, image_url, text);
+      this.postNewMemeToApi(formSubmission[0], formSubmission[1], formSubmission[2]);
     })
   }
 
   editMemePreviewListener() {
-    let title = document.getElementById('preview-title').innerText;
-    let image_url = document.getElementById('preview-image-source').src;
-    let text = document.getElementById('preview-text').innerText;
+    let formSubmission = this.checkIfNewMemeFormSubmissionsAreEmpty();
     document.getElementById('edit-meme').addEventListener('click', (event) => {
       this.memeContainer.innerHTML = '';
       this.memeContainer.innerHTML += `<form id="new-meme-form" class="ui form">
       <div class="field form-field">
       <label>Meme Title:</label>
-      <input type="text" value='${title}'>
+      <input type="text" value='${formSubmission[0]}'>
       </div>
       <div class="field image-field form-field">
       <label>Image URL:</label>
-      <input id="imageInput" type="text" value='${image_url}'>
+      <input id="imageInput" type="text" value='${formSubmission[1]}'>
       </div>
       <div class="field form-field">
       <label>Text:</label>
-      <textarea>${text}</textarea>
+      <textarea>${formSubmission[2]}</textarea>
       </div>
       <button class="ui button" type="submit">Preview</button>
       </form>`;
       this.memePreviewListener();
     })
+  }
+
+  checkIfNewMemeFormSubmissionsAreEmpty() {
+    let title = '';
+    let image_url = '';
+    let text = '';
+    if (document.getElementById('preview-title') !== null) {
+      title = document.getElementById('preview-title').innerText;
+    }
+    if (document.getElementById('preview-image-source') !== null) {
+      image_url = document.getElementById('preview-image-source').src;
+    }
+    if (document.getElementById('preview-text') !== null) {
+      text = document.getElementById('preview-text').innerText;
+    }
+    return [title, image_url, text];
   }
 
 // Torre: deleted newMemeFormSubmissionListener on purpose
@@ -170,6 +186,17 @@ class App {
     .then((res) => this.renderFreshAfterPostToApi());
   }
 
+  // ***** HANDLE COMMENTS *****
+    // moved to comment.js
+
+  // ***** HANDLE PAGE *****
+  renderFreshAfterPostToApi() {
+    this.removeActiveClassFromAllButtons();
+    document.getElementById('fresh').classList.add('active');
+    this.memeContainer.innerHTML = '';
+    this.fetchMemes();
+  }
+
   renderMemePreview(title, image_url, text) {
     let memePreviewString = `<div class="meme ui fluid card">`
     if (image_url) {
@@ -191,17 +218,6 @@ class App {
       <button class="ui button big" id="edit-meme">Edit</button>
       </div>`
     return memePreviewString
-  }
-
-  // ***** HANDLE COMMENTS *****
-    // moved to comment.js
-
-  // ***** HANDLE PAGE *****
-  renderFreshAfterPostToApi() {
-    this.removeActiveClassFromAllButtons();
-    document.getElementById('fresh').classList.add('active');
-    this.memeContainer.innerHTML = '';
-    this.fetchMemes();
   }
 
   removeActiveClassFromAllButtons() {
