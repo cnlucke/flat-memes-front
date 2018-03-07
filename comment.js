@@ -5,10 +5,43 @@ class Comment {
     this.rating = rating;
     this.meme_id = meme_id
     this.created_at = new Date(created_at);
+    this.baseUrl = `http://localhost:3000/api/v1/memes/${this.meme_id}/comments/${this.id}`
   }
 
+  addLikeListener() {
+    const commentDiv = document.getElementById(`comment-${this.id}`)
+    commentDiv.addEventListener('click', event => this.incrementCommentLikes(event))
+  }
+
+  incrementCommentLikes(event) {
+    console.dir(event.target)
+    const ratingNode = event.target.previousSibling
+    const memeId = this.meme_id
+    const commentId = event.target.dataset.id
+    this.rating += 1;
+    let options = {
+      method: 'PATCH',
+      body: JSON.stringify( {comment: this} ),
+      headers: {
+        "Content-Type": 'application/json',
+        Accept: 'application/json'
+      }
+    }
+
+    fetch(this.baseUrl, options)
+      .then(res => res.json())
+      .then(json => {
+        ratingNode.innerHTML = '<i class="check icon"></i>' + this.rating + ' like'
+        if (this.rating > 1) {
+          ratingNode.innerHTML += 's'
+        }
+    })
+  }
+
+
+
   render() {
-    let commentString = `<div class="comment">`
+    let commentString = `<div class="comment" id="comment-${this.id}">`
     commentString += '<div class="content">'
     commentString += '<div class="metadata">'
     commentString += `<div class='rating'><i class="check icon"></i> ${this.rating} like`

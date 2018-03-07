@@ -5,7 +5,7 @@ body, html {
 
 #meme-container {
   width:70%;
-  max-width:700px;
+  max-width:600px;
   min-width:300px;
   margin:auto;
 }
