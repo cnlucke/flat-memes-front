@@ -10,9 +10,16 @@ class Meme {
     this.baseUrl = 'http://localhost:3000/api/v1/memes/'+this.id
   }
 
+  memeDiv() {
+    return document.getElementById('meme-'+this.id)
+  }
+
+  commentContainer() {
+    return this.memeDiv().nextElementSibling
+  }
+
   addLikeListener() {
-    const memeDiv = document.getElementById('meme-'+this.id)
-    const likeButton = memeDiv.querySelector('i')
+    const likeButton = this.memeDiv().querySelector('i')
     likeButton.addEventListener('click', event => this.incrementMemeLikes(event))
   }
 
@@ -39,17 +46,17 @@ class Meme {
   }
 
   seeMoreListener() {
-    const memeDiv = document.getElementById('meme-'+this.id)
-    const seeButton = memeDiv.querySelector('.see-more')
-    const commentContainer = memeDiv.nextElementSibling
+    const seeButton = this.memeDiv().querySelector('.see-more')
+    const containerStyle = this.commentContainer().style
+
     seeButton.addEventListener('click', event => {
       const seeCommentsNode = event.target.childNodes[1]
-      if(commentContainer.style.display === 'block') {
-        commentContainer.style.display = 'none'
+      if(containerStyle.display === 'block') {
+        containerStyle.display = 'none'
         seeCommentsNode.classList.replace('minus', 'add')
         event.target.childNodes[2].nodeValue = "See Comments"
       } else {
-        commentContainer.style.display = 'block'
+        containerStyle.display = 'block'
         seeCommentsNode.classList.replace('add', 'minus')
         event.target.childNodes[2].nodeValue = "Close Comments"
       }
@@ -58,8 +65,7 @@ class Meme {
   }
 
   newCommentListener() {
-    const memeDiv = document.getElementById('meme-'+this.id)
-    const commentContainer = memeDiv.nextElementSibling
+    const commentContainer = this.memeDiv().nextElementSibling
     const button = commentContainer.querySelector('.new-comment')
     button.addEventListener('click', event => {
       let commentText = event.target.previousElementSibling.firstChild
@@ -97,7 +103,6 @@ class Meme {
     const parentCommentContainer = document.getElementById(`${this.id}`)
     parentCommentContainer.innerHTML = this.renderComments();
     newComment.addLikeListener()
-    // this.addCommentLikeListeners()
   }
 
   render() {
