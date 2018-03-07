@@ -98,7 +98,6 @@ class App {
     fresh.addEventListener('click', () => {
       this.removeActiveClassFromAllButtons();
       fresh.classList.add('active');
-      console.log(fresh)
       this.memeContainer.innerHTML = '';
       this.createMemes(this.memes);
     });
@@ -213,15 +212,5 @@ class App {
     fresh.classList.remove('active');
     newMeme.classList.remove('active');
   }
-
-  // imagePreview() {
-  //   $("#imagePreview").bind("paste", function(e){
-  //     var pastedData = e.originalEvent.clipboardData.getData('text');
-  //     let container = document.getElementById('image-field');
-  //     let imageInput = document.getElementById('imagePreview');
-  //     container.innerHTML += `<br><img class="ui medium image" src="${pastedData}">`
-  //     imageInput.value += pastedData;
-  //   });
-  // }
 
 }
