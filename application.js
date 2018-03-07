@@ -29,8 +29,6 @@ class App {
       return new Date(b.created_at) - new Date(a.created_at)
     })
     this.displayMemes()
-    this.seeMoreListeners()
-    this.addCommentListeners()
   }
 
   displayMemes() {
@@ -116,9 +114,9 @@ class App {
                                           <label>Meme Title:</label>
                                           <input type="text" placeholder="Title...">
                                         </div>
-                                        <div class="eight wide field">
+                                        <div id="image-field" class="eight wide field">
                                           <label>Image URL:</label>
-                                          <input type="text" placeholder="Image URL...">
+                                          <input id="imagePreview" type="text" placeholder="Image URL...">
                                         </div>
                                         <div class="eight wide field">
                                           <label>Text:</label>
@@ -127,6 +125,7 @@ class App {
                                         <button class="ui button" type="submit">Submit</button>
                                       </form>`;
       this.newMemeFormSubmissionListener();
+      this.imagePreview();
     });
   }
 
@@ -188,6 +187,18 @@ class App {
     top.classList.remove('active');
     fresh.classList.remove('active');
     newMeme.classList.remove('active');
+  }
+
+  imagePreview() {
+    $("#imagePreview").bind("paste", function(e){
+      var pastedData = e.originalEvent.clipboardData.getData('text');
+      let container = document.getElementById('image-field');
+      let imageInput = document.getElementById('imagePreview');
+      container.innerHTML += `<br><img class="ui medium image" src="${pastedData}">`
+      console.log(pastedData);
+      console.log(imageInput.placeholder);
+      imageInput.value += pastedData;
+  } );
   }
 
 }
