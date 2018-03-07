@@ -10,6 +10,36 @@ class Meme {
     this.baseUrl = 'http://localhost:3000/api/v1/memes/'+this.id
   }
 
+  seeMoreListener() {
+    const memeDiv = document.getElementById('meme-'+this.id)
+    const seeButton = memeDiv.querySelector('.see-more')
+    const commentContainer = memeDiv.nextElementSibling
+    seeButton.addEventListener('click', event => {
+      const seeCommentsNode = event.target.childNodes[1]
+      if(commentContainer.style.display === 'block') {
+        commentContainer.style.display = 'none'
+        seeCommentsNode.classList.replace('minus', 'add')
+        event.target.childNodes[2].nodeValue = "See Comments"
+      } else {
+        commentContainer.style.display = 'block'
+        seeCommentsNode.classList.replace('add', 'minus')
+        event.target.childNodes[2].nodeValue = "Close Comments"
+      }
+    })
+
+  }
+
+  newCommentListener() {
+    const memeDiv = document.getElementById('meme-'+this.id)
+    const commentContainer = memeDiv.nextElementSibling
+    const button = commentContainer.querySelector('.new-comment')
+    button.addEventListener('click', event => {
+      let commentText = event.target.previousElementSibling.firstChild
+      this.postComment(commentText.value)
+      commentText.value = ""
+    })
+  }
+
   postComment(text) {
     let options = {
       method:'POST',
@@ -43,7 +73,7 @@ class Meme {
   }
 
   render() {
-    let memeString = `<div class="meme ui fluid card">`
+    let memeString = `<div class="meme ui fluid card" id="meme-${this.id}">`
     if (this.image_url) {
       memeString += `<div class="image">
                       <img src="${this.image_url}">
