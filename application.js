@@ -38,7 +38,9 @@ class App {
   }
 
   displayMemes() {
-    this.memeContainer.innerHTML = this.memes.map((meme) => meme.render()).join('')
+    this.memeContainer.innerHTML = this.memes.map(meme => {
+      return meme.render()
+    }).join('')
     const memeLikeButtons = document.querySelectorAll(".meme.like")
     for(let i=0; i < memeLikeButtons.length; i++) {
       memeLikeButtons[i].addEventListener('click', (event) => this.incrementMemeLikes(event))
@@ -66,10 +68,10 @@ class App {
     fetch(patchUrl, options)
       .then(res => res.json())
       .then(json => {
-        // ratingNode.innerHTML = '<i class="check icon"></i>' + foundComment.rating + ' like'
-        // if (foundComment.rating > 1) ratingNode.innerHTML += 's'
-
-        this.fetchMemes()
+        const votesNode = event.target.parentNode.nextSibling.childNodes[1]
+        const text = votesNode.innerText.split(' ')
+        const finalText = [text[0], parseInt(text[1]) + 1, text[2]].join(' ')
+        votesNode.innerHTML = '<i class="check icon"></i>' + finalText
     })
   }
 
@@ -77,14 +79,13 @@ class App {
     let seeButtons = document.querySelectorAll('.see-more')
     seeButtons.forEach(button => {
       button.addEventListener('click', event => {
-        let icon = event.target.childNodes[1]
-        if (icon.classList.contains('add')) {
-          icon.classList.replace('add', 'minus')
+        let commentContainer = document.getElementById(`${event.target.dataset.id}`)
+        const addCommentNode = event.target.childNodes[1]
+        if (addCommentNode.classList.contains('add')) {
+          addCommentNode.classList.replace('add', 'minus')
         } else {
-          icon.classList.replace('minus', 'add')
+          addCommentNode.classList.replace('minus', 'add')
         }
-        console.log(icon)
-        let commentContainer = event.target.nextElementSibling
         if(commentContainer.style.display === 'block') {
           commentContainer.style.display = 'none'
         } else {

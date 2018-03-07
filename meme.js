@@ -41,6 +41,7 @@ class Meme {
         <i class="add icon"></i>
           See Comments
       </div>
+      </div>
       <div class="comment-container ui comments" style="display:none" id="${this.id}">${comments}</div>`
     return memeString
   }
