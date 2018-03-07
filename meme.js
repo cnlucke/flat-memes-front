@@ -127,7 +127,7 @@ class Meme {
           ${this.rating} votes
         </a>
       </div>
-      <div class="ui bottom attached button see-more" data-id="${this.id}">
+      <div class="ui bottom attached button see-more" data-id="${this.id}" id="button">
         <i class="add icon"></i>
           See Comments
       </div>
