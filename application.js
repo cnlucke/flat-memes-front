@@ -34,7 +34,8 @@ class App {
     this.memes.sort((a,b) => {
       return new Date(b.created_at) - new Date(a.created_at)
     })
-    this.displayMemes()
+    this.sortComments();
+    this.displayMemes();
   }
 
   displayMemes() {
@@ -242,10 +243,18 @@ class App {
       this.memes.sort((a,b) => {
         return b.rating - a.rating
       })
+      this.sortComments();
       this.displayMemes();
     })
   }
 
+  sortComments() {
+    this.memes.forEach(meme => {
+      meme.comments.sort((a,b) => {
+      return b.rating - a.rating
+      })
+    })
+  }
   removeActiveClassFromAllButtons() {
     let top = document.getElementById('top');
     let fresh = document.getElementById('fresh');
