@@ -93,13 +93,13 @@ class App {
     let title = '';
     let image_url = '';
     let text = '';
-    if (document.getElementById('preview-title') !== null) {
+    if (document.getElementById('preview-title')) {
       title = document.getElementById('preview-title').innerText;
     }
-    if (document.getElementById('preview-image-source') !== null) {
+    if (document.getElementById('preview-image-source')) {
       image_url = document.getElementById('preview-image-source').src;
     }
-    if (document.getElementById('preview-text') !== null) {
+    if (document.getElementById('preview-text')) {
       text = document.getElementById('preview-text').innerText;
     }
     return [title, image_url, text];
@@ -110,7 +110,6 @@ class App {
   freshButtonEventListener() {
     let fresh = document.getElementById('fresh');
     fresh.classList.add('active');
-
     fresh.addEventListener('click', () => {
       this.removeActiveClassFromAllButtons();
       fresh.classList.add('active');
