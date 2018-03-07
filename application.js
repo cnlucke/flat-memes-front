@@ -132,12 +132,8 @@ class App {
     this.memes.sort((a,b) => {
       return new Date(b.created_at) - new Date(a.created_at)
     })
-<<<<<<< HEAD
-    this.displayMemes()
-=======
     this.memes.forEach(meme => meme.sortComments())
     this.displayMemes();
->>>>>>> 07413028a553941261dabf8a534acbc2e5a00c18
   }
 
   displayMemes() {
@@ -208,39 +204,6 @@ class App {
       .then(json => this.addNewComment(json, memeId))
   }
 
-  newMemeButtonEventListener() {
-    let newMeme = document.getElementById('new-meme');
-    newMeme.addEventListener('click', () => {
-      this.removeActiveClassFromAllButtons();
-      newMeme.classList.add('active');
-      this.memeContainer.innerHTML = '';
-      this.memeContainer.innerHTML += `<form id="new-meme-form" class="ui form">
-                                        <div class="eight wide field">
-                                          <label>Meme Title:</label>
-                                          <input type="text" placeholder="Title...">
-                                        </div>
-                                        <div id="image-field" class="eight wide field">
-                                          <label>Image URL:</label>
-                                          <input id="imagePreview" type="text" placeholder="Image URL...">
-                                        </div>
-                                        <div class="eight wide field">
-                                          <label>Text:</label>
-                                          <textarea></textarea>
-                                        </div>
-                                        <button class="ui button" type="submit">Submit</button>
-                                      </form>`;
-      this.newMemeFormSubmissionListener();
-      this.imagePreview();
-    });
-  }
-
-  newMemeFormSubmissionListener() {
-    let newMeme = document.getElementById('new-meme-form')
-    newMeme.addEventListener('submit', (event) => {
-      event.preventDefault();
-      this.postNewMemeToApi(newMeme[0].value, newMeme[1].value, newMeme[2].value);
-    })
-
     addNewComment(json, memeId) {
       //find parent meme object using memeId
       const parent = this.memes.find((meme) => meme.id == memeId)
@@ -287,7 +250,6 @@ class App {
         this.addCommentLikeListeners()
     })
   }
-
 
   // ***** HANDLE PAGE *****
   renderFreshAfterPostToApi() {
