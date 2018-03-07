@@ -62,15 +62,15 @@ class App {
       newMeme.classList.add('active');
       this.memeContainer.innerHTML = '';
       this.memeContainer.innerHTML += `<form id="new-meme-form" class="ui form">
-      <div class="sixteen wide field form-field">
+      <div class="field form-field">
       <label>Meme Title:</label>
       <input type="text" placeholder="Title...">
       </div>
-      <div class="sixteen wide field form-field">
+      <div class="field form-field">
       <label>Image URL:</label>
       <input type="text" placeholder="Image URL...">
       </div>
-      <div class="sixteen wide field form-field">
+      <div class="field form-field">
       <label>Text:</label>
       <textarea></textarea>
       </div>
