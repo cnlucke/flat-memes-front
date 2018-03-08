@@ -3,6 +3,8 @@ class App {
     this.memeContainer = document.getElementById('meme-container')
     this.memeUrl = 'http://localhost:3000/api/v1/memes'
     this.memes = [];
+    this.pageStart = 0
+    this.pageEnd = 15;
   }
   // **** EVENT LISTENERS *****
   buttonEventListeners() {
@@ -105,6 +107,12 @@ class App {
     return [title, image_url, text];
   }
 
+  morePostsButtonEventListener() {
+    document.getElementById('more-memes-button').addEventListener('click', (event) => {
+      this.displayMemes();
+    })
+  }
+
 // Torre: deleted newMemeFormSubmissionListener on purpose
 
   freshButtonEventListener() {
@@ -123,6 +131,8 @@ class App {
     top.addEventListener('click', event => {
       this.removeActiveClassFromAllButtons();
       top.classList.add('active');
+      this.pageStart = 0;
+      this.pageEnd = 15;
       this.memes.sort((a,b) => {
         return b.rating - a.rating
       })
@@ -154,22 +164,34 @@ class App {
       return new Date(b.created_at) - new Date(a.created_at)
     })
     this.memes.forEach(meme => meme.sortComments())
+    this.pageStart = 0;
+    this.pageEnd = 15;
     this.displayMemes();
   }
 
   displayMemes() {
-    this.memeContainer.innerHTML = this.memes.map(meme => {
+    if (this.pageStart === 0) {
+      this.memeContainer.innerHTML = '';
+    }
+    let pageCount = this.memes.slice(this.pageStart, this.pageEnd);
+    this.memeContainer.innerHTML += pageCount.map(meme => {
       return meme.render()
     }).join('')
-
-    this.memes.forEach(meme => {
+    pageCount.forEach(meme => {
       meme.seeMoreListener()
       meme.newCommentListener()
       meme.commentListeners()
       meme.addLikeListener()
     })
+    this.pageStart += 15;
+    this.pageEnd += 15;
+    if (this.pageStart > this.memes.length) {
+      document.getElementById('more-memes-button-container').innerHTML = "<br><br><button class='huge ui teal button'>No More Memes!</button>"
+    } else {
+      document.getElementById('more-memes-button-container').innerHTML = "<br><br><button id='more-memes-button'class='huge ui teal button'>More Memes Please!</button>"
+      this.morePostsButtonEventListener();
+    }
   }
-
 
   postNewMemeToApi(title, image_url, text) {
     let memeObj = {"title": title, "image_url": image_url, "text": text, "rating": 0};
@@ -181,7 +203,7 @@ class App {
       },
       body: JSON.stringify({"meme": memeObj})
     }
-    fetch('http://localhost:3000/api/v1/memes', options)
+    fetch(`${this.memeUrl}`, options)
     .then((res) => this.renderFreshAfterPostToApi());
   }
 
