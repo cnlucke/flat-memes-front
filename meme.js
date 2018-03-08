@@ -61,8 +61,8 @@ const Meme = (() => {
       this.comments.forEach(comment => {
         let likeIcon = document.querySelector(`#like-${comment.id}`)
         likeIcon.addEventListener('click', event => {
-            comment.incrementCommentLikes(event)
-            this.refreshComments()
+          comment.incrementCommentLikes(event)
+          this.refreshComments()
         })
       })
     }
@@ -70,14 +70,9 @@ const Meme = (() => {
     addMemeLikeListener() {
       const likeIcon = document.querySelector(`#meme-like-${this.id}`)
       // add an event listener to each meme like icon
-      likeIcon.addEventListener("click", event => {
-        // only increment meme likes if they haven't been liked before
-        if (event.target.dataset.liked === 'false') {
-          this.incrementMemeLikes(event)
-        }
-      })
+      likeIcon.addEventListener("click", event => this.incrementMemeLikes(event))
     }
-  // ***** END OF EVENT LISTENERS *****
+    // ***** END OF EVENT LISTENERS *****
 
     incrementMemeLikes(event) {
       if (!liked_memes.includes(this.id)) {
@@ -85,24 +80,32 @@ const Meme = (() => {
         this.rating += 1;
         event.target.classList.add('red');
         event.target.setAttribute('data-liked', 'true')
-        let options = {
-          method: 'PATCH',
-          body: JSON.stringify( {meme: this} ),
-          headers: {
-            "Content-Type": 'application/json',
-            Accept: 'application/json'
-          }
-        }
-        fetch(this.baseUrl, options)
-          .then(res => res.json())
-          .then(json => {
-            // update vote count in place
-            const votesNode = event.target.parentNode.nextSibling.childNodes[1]
-            const text = votesNode.innerText.split(' ')
-            const finalText = [text[0], parseInt(text[1]) + 1, text[2]].join(' ')
-            votesNode.innerHTML = '<i class="check icon"></i>' + finalText
-          })
+      } else {
+        // remove from liked_memes and decrement likes
+        const index = liked_memes.indexOf(this.id);
+        if (index > -1) liked_memes.splice(index, 1);
+        this.rating -= 1;
+        event.target.classList.remove('red');
+        event.target.setAttribute('data-liked', 'false')
       }
+      let options = {
+        method: 'PATCH',
+        body: JSON.stringify( {meme: this} ),
+        headers: {
+          "Content-Type": 'application/json',
+          Accept: 'application/json'
+        }
+      }
+
+      fetch(this.baseUrl, options)
+      .then(res => res.json())
+      .then(json => {
+        // update vote count in place
+        const votesNode = event.target.parentNode.nextSibling.childNodes[1]
+        const text = votesNode.innerText.split(' ')
+        const finalText = [text[0], json.rating, text[2]].join(' ')
+        votesNode.innerHTML = '<i class="check icon"></i>' + finalText
+      })
     }
 
     postComment(text) {
@@ -115,10 +118,10 @@ const Meme = (() => {
         body: JSON.stringify({text:text, rating:0, meme_id:this.id})
       }
       fetch(`${this.baseUrl}/comments`, options)
-        .then(res => res.json())
-        .then(json => {
-          this.addNewComment(json)
-        })
+      .then(res => res.json())
+      .then(json => {
+        this.addNewComment(json)
+      })
     }
 
 
@@ -144,15 +147,15 @@ const Meme = (() => {
       let memeString = `<div class="meme ui fluid card" id="meme-${this.id}">`
       if (this.image_url) {
         memeString += `<div class="image">
-                        <img src="${this.image_url}">
-                       </div>`
+        <img src="${this.image_url}">
+        </div>`
       }
       if (liked_memes.includes(this.id)) {
         memeString += `<div class="content">
-                     <i class="right floated meme like icon red" id="meme-like-${this.id}" data-liked="true"></i>`
+        <i class="right floated meme like icon red" id="meme-like-${this.id}" data-liked="true"></i>`
       } else {
         memeString += `<div class="content">
-                     <i class="right floated meme like icon" id="meme-like-${this.id}" data-liked="false"></i>`
+        <i class="right floated meme like icon" id="meme-like-${this.id}" data-liked="false"></i>`
       }
 
       if (this.title) {
@@ -160,37 +163,37 @@ const Meme = (() => {
       }
 
       memeString += `<div class="meta">
-                      <span class="date">${this.whenPosted()}</span>
-                     </div>`
+      <span class="date">${this.whenPosted()}</span>
+      </div>`
       if (this.text) {
         memeString += `<div class="description">${this.text}</div>`
       }
       memeString += `</div>` //closing content div
       memeString += `<div class="extra content">
-                    <a>
-                    <i class="check icon"></i>
-                    ${this.rating} Like`
+      <a>
+      <i class="check icon"></i>
+      ${this.rating} Like`
       if (this.rating === 0 || this.rating > 1) {
         memeString += `s`
       }
       memeString += `</a>
-                    <p class="comment-count"style="float:right;">${this.comments.length} Comment`
+      <p class="comment-count"style="float:right;">${this.comments.length} Comment`
       if (this.comments.length === 0 || this.comments.length > 1) {
         memeString += `s`
       }
       memeString += `</p>
-                    </div>
-                    <div class="ui bottom attached button see-more" data-id="${this.id}" id="button">
-                    <i class="add icon"></i>`
+      </div>
+      <div class="ui bottom attached button see-more" data-id="${this.id}" id="button">
+      <i class="add icon"></i>`
       if (this.comments.length > 0) {
         memeString += 'See Comments'
       } else {
         memeString += 'Add Comment'
       }
       memeString += `</div>
-                    </div>
-                    <div class="comment-container ui comments" style="display:none"
-                    id="${this.id}">${this.renderComments()}</div>`
+      </div>
+      <div class="comment-container ui comments" style="display:none"
+      id="${this.id}">${this.renderComments()}</div>`
 
       return memeString
     }
