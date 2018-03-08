@@ -164,9 +164,8 @@ class App {
 
     this.memes.forEach(meme => {
       meme.seeMoreListener()
-      meme.newCommentListener()
-      meme.commentListeners()
-      meme.addLikeListener()
+      meme.newCommentButtonListener()
+      meme.addCommentLikeListeners()
     })
   }
 

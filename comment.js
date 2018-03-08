@@ -8,11 +8,6 @@ class Comment {
     this.baseUrl = `http://localhost:3000/api/v1/memes/${this.meme_id}/comments/${this.id}`
   }
 
-  addLikeListener() {
-    const commentDiv = document.getElementById(`comment-${this.id}`)
-    commentDiv.addEventListener('click', event => this.incrementCommentLikes(event))
-  }
-
   incrementCommentLikes(event) {
     const ratingNode = event.target.previousSibling
     const memeId = this.meme_id
@@ -47,7 +42,7 @@ class Comment {
       } else {
         commentString += `s</div>`
       }
-    commentString += `<i class="left comment like icon" data-id="${this.id}" data-meme="${this.meme_id}"></i>`
+    commentString += `<i class="left comment like icon" id="like-${this.id}" data-meme="${this.meme_id}"></i>`
     commentString += `<div class='date'>${this.formatDate(this.created_at)}</div>`
     commentString += '</div>' //close metadata
     commentString += `<div class='text'>${this.text}</div>`

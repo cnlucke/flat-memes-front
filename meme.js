@@ -18,10 +18,46 @@ class Meme {
     return this.memeDiv().nextElementSibling
   }
 
-  addLikeListener() {
-    const likeButton = this.memeDiv().querySelector('i')
-    likeButton.addEventListener('click', event => this.incrementMemeLikes(event))
+  // ***** EVENT LISTENERS *****
+  seeMoreListener() {
+    const seeButton = this.memeDiv().querySelector('.see-more')
+    const containerStyle = this.commentContainer().style
+
+    seeButton.addEventListener('click', event => {
+      const seeCommentsNode = event.target.childNodes[1]
+      if(containerStyle.display === 'block') {
+        containerStyle.display = 'none'
+        seeCommentsNode.classList.replace('minus', 'add')
+        event.target.childNodes[2].nodeValue = "See Comments"
+      } else {
+        containerStyle.display = 'block'
+        seeCommentsNode.classList.replace('add', 'minus')
+        event.target.childNodes[2].nodeValue = "Close Comments"
+      }
+    })
   }
+
+  newCommentButtonListener() {
+    const commentContainer = this.memeDiv().nextElementSibling
+    const button = commentContainer.querySelector('.new-comment')
+    button.addEventListener('click', event => {
+      let commentText = event.target.previousElementSibling.firstChild
+      this.postComment(commentText.value)
+      commentText.value = ""
+    })
+  }
+
+  addCommentLikeListeners() {
+    this.comments.forEach(comment => {
+      let likeIcon = document.querySelector(`#like-${comment.id}`)
+      likeIcon.addEventListener('click', event => {
+        comment.incrementCommentLikes(event)
+        this.refreshComments()
+      })
+    })
+  }
+
+// ***** END OF EVENT LISTENERS *****
 
   incrementMemeLikes(event) {
     this.rating += 1;
@@ -45,35 +81,6 @@ class Meme {
     })
   }
 
-  seeMoreListener() {
-    const seeButton = this.memeDiv().querySelector('.see-more')
-    const containerStyle = this.commentContainer().style
-
-    seeButton.addEventListener('click', event => {
-      const seeCommentsNode = event.target.childNodes[1]
-      if(containerStyle.display === 'block') {
-        containerStyle.display = 'none'
-        seeCommentsNode.classList.replace('minus', 'add')
-        event.target.childNodes[2].nodeValue = "See Comments"
-      } else {
-        containerStyle.display = 'block'
-        seeCommentsNode.classList.replace('add', 'minus')
-        event.target.childNodes[2].nodeValue = "Close Comments"
-      }
-    })
-
-  }
-
-  newCommentListener() {
-    const commentContainer = this.memeDiv().nextElementSibling
-    const button = commentContainer.querySelector('.new-comment')
-    button.addEventListener('click', event => {
-      let commentText = event.target.previousElementSibling.firstChild
-      this.postComment(commentText.value)
-      commentText.value = ""
-    })
-  }
-
   postComment(text) {
     let options = {
       method:'POST',
@@ -90,9 +97,6 @@ class Meme {
       })
   }
 
-  commentListeners() {
-    this.comments.forEach(comment => comment.addLikeListener())
-  }
 
   addNewComment(json) {
     // creating new comment with each field because mass assignment with json object adds meme object
@@ -100,9 +104,16 @@ class Meme {
     //push new comment into parent comments array
     this.comments.push(newComment)
     //render comments and replace parents' comment container
+    this.refreshComments()
+    this.seeMoreListener()
+  }
+
+  refreshComments() {
     const parentCommentContainer = document.getElementById(`${this.id}`)
+    this.sortComments()
     parentCommentContainer.innerHTML = this.renderComments();
-    newComment.addLikeListener()
+    this.newCommentButtonListener()
+    this.addCommentLikeListeners()
   }
 
   render() {
