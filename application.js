@@ -181,6 +181,7 @@ class App {
       meme.seeMoreListener()
       meme.newCommentButtonListener()
       meme.addCommentLikeListeners()
+      meme.addMemeLikeListener()
     })
     this.pageStart += 15;
     this.pageEnd += 15;

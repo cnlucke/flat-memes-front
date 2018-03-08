@@ -57,11 +57,22 @@ class Meme {
     })
   }
 
+  addMemeLikeListener() {
+    const likeIcon = document.querySelector(`#meme-like-${this.id}`)
+    // add an event listener to each meme like icon
+    likeIcon.addEventListener("click", event => {
+      // only increment meme likes if they haven't been liked before
+      if (event.target.dataset.liked === 'false') {
+        this.incrementMemeLikes(event)
+      }
+    })
+  }
 // ***** END OF EVENT LISTENERS *****
 
   incrementMemeLikes(event) {
     this.rating += 1;
     event.target.classList.add('red');
+    event.target.setAttribute('data-liked', 'true')
     let options = {
       method: 'PATCH',
       body: JSON.stringify( {meme: this} ),
@@ -78,6 +89,7 @@ class Meme {
         const text = votesNode.innerText.split(' ')
         const finalText = [text[0], parseInt(text[1]) + 1, text[2]].join(' ')
         votesNode.innerHTML = '<i class="check icon"></i>' + finalText
+        // CHANGE DATA-LIKED TO TRUE
     })
   }
 
@@ -124,7 +136,7 @@ class Meme {
                      </div>`
     }
     memeString += `<div class="content">
-                   <i class="right floated meme like icon" data-id="${this.id}"></i>`
+                   <i class="right floated meme like icon" id="meme-like-${this.id}" data-liked="false"></i>`
 
     if (this.title) {
       memeString += `<a class="header">${this.title}</a>`
