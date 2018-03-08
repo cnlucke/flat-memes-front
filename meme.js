@@ -48,7 +48,9 @@ class Meme {
       if (this.comments.length === 1) {
         commentCount.innerText += 's';
       }
-      commentCount.innerText = `${parseInt(commentCount.innerText[0]) + 1}` + commentCount.innerText.slice(1);
+      let commentSplit = commentCount.innerText.split(' ');
+      commentSplit[0]++;
+      commentCount.innerText = commentSplit.join(' ');
       commentText.value = ""
     })
   }
