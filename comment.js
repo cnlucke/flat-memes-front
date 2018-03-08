@@ -5,31 +5,36 @@ class Comment {
     this.rating = rating;
     this.meme_id = meme_id
     this.created_at = new Date(created_at);
+    this.liked_comments = []
     this.baseUrl = `http://localhost:3000/api/v1/memes/${this.meme_id}/comments/${this.id}`
   }
 
   incrementCommentLikes(event) {
-    const ratingNode = event.target.previousSibling
-    const memeId = this.meme_id
-    const commentId = event.target.dataset.id
-    this.rating += 1;
-    let options = {
-      method: 'PATCH',
-      body: JSON.stringify( {comment: this} ),
-      headers: {
-        "Content-Type": 'application/json',
-        Accept: 'application/json'
-      }
-    }
+    if (!this.liked_comments.includes(this.id)) {
+      this.liked_comments.push(this.id)
+      const ratingNode = event.target.previousSibling
+      const memeId = this.meme_id
+      const commentId = event.target.dataset.id
+      this.rating += 1;
 
-    fetch(this.baseUrl, options)
-      .then(res => res.json())
-      .then(json => {
-        ratingNode.innerHTML = '<i class="check icon"></i>' + this.rating + ' like'
-        if (this.rating > 1) {
-          ratingNode.innerHTML += 's'
+      let options = {
+        method: 'PATCH',
+        body: JSON.stringify( {comment: this} ),
+        headers: {
+          "Content-Type": 'application/json',
+          Accept: 'application/json'
         }
-    })
+      }
+
+      fetch(this.baseUrl, options)
+        .then(res => res.json())
+        .then(json => {
+          ratingNode.innerHTML = '<i class="check icon"></i>' + this.rating + ' like'
+          if (this.rating > 1) {
+            ratingNode.innerHTML += 's'
+          }
+      })
+    }
   }
 
   render() {
@@ -42,7 +47,11 @@ class Comment {
       } else {
         commentString += `s</div>`
       }
-    commentString += `<i class="left comment like icon" id="like-${this.id}" data-meme="${this.meme_id}"></i>`
+    if (this.liked_comments.includes(this.id)) {
+      commentString += `<i class="left comment like icon red" id="like-${this.id}" data-liked="true" data-meme="${this.meme_id}"></i>`
+    } else {
+      commentString += `<i class="left comment like icon" id="like-${this.id}" data-liked="false" data-meme="${this.meme_id}"></i>`
+    }
     commentString += `<div class='date'>${this.formatDate(this.created_at)}</div>`
     commentString += '</div>' //close metadata
     commentString += `<div class='text'>${this.text}</div>`

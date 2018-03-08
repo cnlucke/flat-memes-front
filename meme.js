@@ -51,8 +51,8 @@ class Meme {
     this.comments.forEach(comment => {
       let likeIcon = document.querySelector(`#like-${comment.id}`)
       likeIcon.addEventListener('click', event => {
-        comment.incrementCommentLikes(event)
-        this.refreshComments()
+          comment.incrementCommentLikes(event)
+          this.refreshComments()
       })
     })
   }
