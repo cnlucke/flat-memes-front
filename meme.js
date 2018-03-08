@@ -47,6 +47,8 @@ class Meme {
       let commentCount = this.memeDiv().querySelector('.comment-count');
       if (this.comments.length === 1) {
         commentCount.innerText += 's';
+      } else if (this.comments.length === 0) {
+        commentCount.innerText = commentCount.innerText.slice(0, commentCount.innerText.length -1)
       }
       let commentSplit = commentCount.innerText.split(' ');
       commentSplit[0]++;
