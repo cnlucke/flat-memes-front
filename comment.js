@@ -37,25 +37,25 @@ const Comment = (() => {
         })
       }
     }
+    
     render() {
-      let commentString = `<div class="ui raised segment"><div class="comment" id="comment-${this.id}">`
-      commentString += '<div class="content">'
-      commentString += '<div class="metadata">'
-      commentString += `<div class='rating'><i class="check icon"></i> ${this.rating} like`
+      let commentString = `<div class="ui raised segment">
+                            <div class="comment" id="comment-${this.id}">
+                              <div class="content">
+                                <div class="metadata">
+                                  <div class='rating'><div class='date'>${this.formatDate(this.created_at)}</div></div>`
+      if (liked_comments.includes(this.id)) {
+        commentString += `<i class="right floated like icon red" id="like-${this.id}" data-liked="true" data-meme="${this.meme_id}"></i>`
+      } else {
+        commentString += `<i class="left like icon" id="like-${this.id}" data-liked="false" data-meme="${this.meme_id}"></i>`
+      }
+      commentString += `<br><div class='text'><h4>${this.text}</h4></div><br><div class='rating'><i class="check icon"></i> ${this.rating} like`
       if (this.rating == 1) {
          commentString += '</div>'
         } else {
           commentString += `s</div>`
         }
-      if (liked_comments.includes(this.id)) {
-        commentString += `<i class="left comment like icon red" id="like-${this.id}" data-liked="true" data-meme="${this.meme_id}"></i>`
-      } else {
-        commentString += `<i class="left comment like icon" id="like-${this.id}" data-liked="false" data-meme="${this.meme_id}"></i>`
-      }
-      commentString += `<div class='date'>${this.formatDate(this.created_at)}</div>`
-      commentString += '</div>' //close metadata
-      commentString += `<div class='text'>${this.text}</div>`
-      commentString += `</div></div></div>` //close content and comment
+      commentString += '</div></div></div></div>'
       return commentString
     }
 

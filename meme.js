@@ -91,6 +91,7 @@ class Meme {
         Accept: 'application/json'
       }
     }
+    
     fetch(this.baseUrl, options)
       .then(res => res.json())
       .then(json => {
