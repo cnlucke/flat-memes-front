@@ -102,6 +102,7 @@ class App {
 
   morePostsButtonEventListener() {
     document.getElementById('more-memes-button').addEventListener('click', (event) => {
+      event.stopPropagation();
       this.displayMemes();
     })
   }
@@ -170,7 +171,7 @@ class App {
     this.memeContainer.innerHTML += pageCount.map(meme => {
       return meme.render()
     }).join('')
-    pageCount.forEach(meme => {
+    this.memes.slice(0, this.pageEnd).forEach(meme => {
       meme.seeMoreListener()
       meme.newCommentButtonListener()
       meme.addCommentLikeListeners()
@@ -178,7 +179,7 @@ class App {
     })
     this.pageStart += 15;
     this.pageEnd += 15;
-    if (this.pageStart > this.memes.length) {
+    if (this.pageStart >= this.memes.length) {
       document.getElementById('more-memes-button-container').innerHTML = "<br><br><button class='huge ui teal button'>No More Memes!</button>"
     } else {
       document.getElementById('more-memes-button-container').innerHTML = "<br><br><button id='more-memes-button'class='huge ui teal button'>More Memes Please!</button>"

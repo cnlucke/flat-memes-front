@@ -147,56 +147,55 @@ const Meme = (() => {
       this.addCommentLikeListeners()
     }
 
-
-      render() {
-        let memeString = `<div class="meme ui fluid card" id="meme-${this.id}">`
-        if (this.image_url) {
-          memeString += `<div class="image">
-          <img src="${this.image_url}">
-          </div>`
-        }
-        if (liked_memes.includes(this.id)) {
-          memeString += `<div class="content">
-          <i class="right floated meme like icon red" id="meme-like-${this.id}" data-liked="true"></i>`
-        } else {
-          memeString += `<div class="content">
-          <i class="right floated meme like icon" id="meme-like-${this.id}" data-liked="false"></i>`
-        }
-        if (this.title) {
-          memeString += `<a class="header">${this.title}</a>`
-        }
-        memeString += `<div class="meta">
-        <span class="date">${this.whenPosted()}</span>
+    render() {
+      let memeString = `<div class="meme ui fluid card" id="meme-${this.id}">`
+      if (this.image_url) {
+        memeString += `<div class="image">
+        <img src="${this.image_url}">
         </div>`
-        if (this.text) {
-          memeString += `<div class="description">${this.text}</div>`
-        }
-        memeString += `</div>` //closing content div
-        memeString += `<div class="extra content">
-        <a><i class="check icon"></i>${this.rating} Like`
-        if (this.rating === 0 || this.rating > 1) {
-          memeString += `s`
-        }
-        memeString += `</a>
-        <p class="comment-count" style="float:right;">${this.comments.length} Comment`
-        if (this.comments.length === 0 || this.comments.length > 1) {
-          memeString += `s`
-        }
-        memeString += `</p>
-        </div>
-        <div class="ui bottom attached button see-more" data-id="${this.id}" id="button">
-        <i class="add icon"></i>`
-        if (this.comments.length > 0) {
-          memeString += 'See Comments'
-        } else {
-          memeString += 'Add Comment'
-        }
-        memeString += `</div>
-        </div>
-        <div class="comment-container ui comments" style="display:none"
-        id="${this.id}">${this.renderComments()}</div>`
+      }
+      if (liked_memes.includes(this.id)) {
+        memeString += `<div class="content">
+        <i class="right floated meme like icon red" id="meme-like-${this.id}" data-liked="true"></i>`
+      } else {
+        memeString += `<div class="content">
+        <i class="right floated meme like icon" id="meme-like-${this.id}" data-liked="false"></i>`
+      }
+      if (this.title) {
+        memeString += `<a class="header">${this.title}</a>`
+      }
+      memeString += `<div class="meta">
+      <span class="date">${this.whenPosted()}</span>
+      </div>`
+      if (this.text) {
+        memeString += `<div class="description">${this.text}</div>`
+      }
+      memeString += `</div>` //closing content div
+      memeString += `<div class="extra content">
+      <a><i class="check icon"></i>${this.rating} Like`
+      if (this.rating === 0 || this.rating > 1) {
+        memeString += `s`
+      }
+      memeString += `</a>
+      <p class="comment-count" style="float:right;">${this.comments.length} Comment`
+      if (this.comments.length === 0 || this.comments.length > 1) {
+        memeString += `s`
+      }
+      memeString += `</p>
+      </div>
+      <div class="ui bottom attached button see-more" data-id="${this.id}" id="button">
+      <i class="add icon"></i>`
+      if (this.comments.length > 0) {
+        memeString += 'See Comments'
+      } else {
+        memeString += 'Add Comment'
+      }
+      memeString += `</div>
+      </div>
+      <div class="comment-container ui comments" style="display:none"
+      id="${this.id}">${this.renderComments()}</div>`
 
-        return memeString
+      return memeString
     }
 
     renderComments() {
