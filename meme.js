@@ -43,6 +43,12 @@ class Meme {
     button.addEventListener('click', event => {
       let commentText = event.target.previousElementSibling.firstChild
       this.postComment(commentText.value)
+      // pluralizing comments on meme page if there are more than one comment
+      let commentCount = this.memeDiv().querySelector('.comment-count');
+      if (this.comments.length === 1) {
+        commentCount.innerText += 's';
+      }
+      commentCount.innerText = `${parseInt(commentCount.innerText[0]) + 1}` + commentCount.innerText.slice(1);
       commentText.value = ""
     })
   }
@@ -150,18 +156,31 @@ class Meme {
     }
     memeString += `</div>` //closing content div
     memeString += `<div class="extra content">
-        <a>
-          <i class="check icon"></i>
-          ${this.rating} votes
-        </a>
-      </div>
-      <div class="ui bottom attached button see-more" data-id="${this.id}" id="button">
-        <i class="add icon"></i>
-          See Comments
-      </div>
-      </div>
-      <div class="comment-container ui comments" style="display:none"
-        id="${this.id}">${this.renderComments()}</div>`
+                  <a>
+                  <i class="check icon"></i>
+                  ${this.rating} Like`
+    if (this.rating === 0 || this.rating > 1) {
+      memeString += `s`
+    }
+    memeString += `</a>
+                  <p class="comment-count"style="float:right;">${this.comments.length} Comment`
+    if (this.comments.length === 0 || this.comments.length > 1) {
+      memeString += `s`
+    }
+    memeString += `</p>
+                  </div>
+                  <div class="ui bottom attached button see-more" data-id="${this.id}" id="button">
+                  <i class="add icon"></i>`
+    if (this.comments.length > 0) {
+      memeString += 'See Comments'
+    } else {
+      memeString += 'Add Comment'
+    }
+    memeString += `</div>
+                  </div>
+                  <div class="comment-container ui comments" style="display:none"
+                  id="${this.id}">${this.renderComments()}</div>`
+
     return memeString
   }
 
