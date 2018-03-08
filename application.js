@@ -13,14 +13,6 @@ class App {
     this.topButtonEventListener();
   }
 
-  seeMoreListeners() {
-    // moved to meme.js
-  }
-
-  addCommentListeners() {
-    // moved to meme.js
-  }
-
   newMemeButtonEventListener() {
     let newMeme = document.getElementById('new-meme');
     newMeme.addEventListener('click', () => {
@@ -207,9 +199,6 @@ class App {
     fetch(`${this.memeUrl}`, options)
     .then((res) => this.renderFreshAfterPostToApi());
   }
-
-  // ***** HANDLE COMMENTS *****
-    // moved to comment.js
 
   // ***** HANDLE PAGE *****
   renderFreshAfterPostToApi() {

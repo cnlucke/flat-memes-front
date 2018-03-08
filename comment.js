@@ -11,12 +11,21 @@ const Comment = (() => {
     }
 
     incrementCommentLikes(event) {
+      const ratingNode = event.target.previousSibling
+      const memeId = this.meme_id
+      const commentId = event.target.dataset.id
+
       if (!liked_comments.includes(this.id)) {
         liked_comments.push(this.id)
-        const ratingNode = event.target.previousSibling
-        const memeId = this.meme_id
-        const commentId = event.target.dataset.id
         this.rating += 1;
+
+      } else {
+        const index = liked_comments.indexOf(this.id);
+        if (index > -1) liked_comments.splice(index, 1);
+        this.rating -= 1;
+        event.target.classList.remove('red');
+        event.target.setAttribute('data-liked', 'false')
+      }
 
         let options = {
           method: 'PATCH',
@@ -35,7 +44,6 @@ const Comment = (() => {
               ratingNode.innerHTML += 's'
             }
         })
-      }
     }
     
     render() {
