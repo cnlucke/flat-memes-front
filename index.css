@@ -38,14 +38,15 @@ body, html {
 }
 
 #header {
-  font-size: 4rem;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 9rem;
+  font-family: 'Londrina Solid', cursive;
   font-style: normal;
   font-variant: normal;
   font-weight: 600;
   line-height: 26.4px;
-  /* color: white; */
-  margin: 0px;
+  color: white;
+  margin: 20px;
+  padding: 20px;
 }
 
 #fresh {
@@ -56,26 +57,28 @@ body, html {
   background-color: #238876;
   border: solid;
   border-color: black;
-  border-width: thin;
+  border-width: medium;
 }
 
 #top.active {
   background-color: #306A90;
   border: solid;
   border-color: black;
-  border-width: thin;
+  border-width: medium;
 }
 
 #new-meme.active {
   background-color: #c25024;
   border: solid;
   border-color: black;
-  border-width: thin;
+  border-width: medium;
 }
 
 .landing-image {
-    background-image: url('https://i.pinimg.com/564x/9e/fe/f2/9efef2c49ab8fb81f62286ecba5deb37--laminate-countertops-abstract-pattern.jpg') !important;
-    /* background-image: url('https://media.istockphoto.com/vectors/smiling-pattern-vector-id525433359?k=6&m=525433359&s=612x612&w=0&h=XirHYP5vVbK3rlGwNbL3U5MqcCFHvI67HSnOQ1ylfsg=') !important; */
+    /* background-image: url('https://i.pinimg.com/564x/9e/fe/f2/9efef2c49ab8fb81f62286ecba5deb37--laminate-countertops-abstract-pattern.jpg') !important; */
+    /* background-image: url('https://cdn.shutterstock.com/shutterstock/videos/1290388/thumb/1.jpg') !important; */
+    /* background-image: url('http://www.powerpointhintergrund.com/download/wood-background-pictures-free-download-4839') !important; */
+    background-image: url('https://www.photocase.com/photos/1387971-healthy-eating-life-style-background-picture-wood-food-photocase-stock-photo-large.jpeg') !important;
     background-size: cover !important;
 }
 
