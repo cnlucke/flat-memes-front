@@ -30,7 +30,7 @@ const Meme = (() => {
         if(containerStyle.display === 'block') {
           containerStyle.display = 'none'
           seeCommentsNode.classList.replace('minus', 'add')
-          if (this.comments.count > 1) {
+          if (this.comments.length > 0) {
             event.target.childNodes[2].nodeValue = "See Comments"
           } else {
             event.target.childNodes[2].nodeValue = "Add Comments"
