@@ -37,18 +37,8 @@ const Comment = (() => {
         })
       }
     }
-
-<<<<<<< HEAD
-  render() {
-    let commentString = `<div class="ui raised segment"><div class="comment" id="comment-${this.id}">`
-    commentString += '<div class="content">'
-    commentString += '<div class="metadata">'
-    commentString += `<div class='rating'><i class="check icon"></i> ${this.rating} like`
-    if (this.rating == 1) {
-       commentString += '</div>'
-=======
     render() {
-      let commentString = `<div class="comment" id="comment-${this.id}">`
+      let commentString = `<div class="ui raised segment"><div class="comment" id="comment-${this.id}">`
       commentString += '<div class="content">'
       commentString += '<div class="metadata">'
       commentString += `<div class='rating'><i class="check icon"></i> ${this.rating} like`
@@ -59,25 +49,15 @@ const Comment = (() => {
         }
       if (liked_comments.includes(this.id)) {
         commentString += `<i class="left comment like icon red" id="like-${this.id}" data-liked="true" data-meme="${this.meme_id}"></i>`
->>>>>>> 1d7cbe9b4d85109b18e295ef1bd2b18eb749671d
       } else {
         commentString += `<i class="left comment like icon" id="like-${this.id}" data-liked="false" data-meme="${this.meme_id}"></i>`
       }
       commentString += `<div class='date'>${this.formatDate(this.created_at)}</div>`
       commentString += '</div>' //close metadata
       commentString += `<div class='text'>${this.text}</div>`
-      commentString += `</div></div>` //close content and comment
+      commentString += `</div></div></div>` //close content and comment
       return commentString
     }
-<<<<<<< HEAD
-    commentString += `<div class='date'>${this.formatDate(this.created_at)}</div>`
-    commentString += '</div>' //close metadata
-    commentString += `<div class='text'>${this.text}</div>`
-    commentString += `</div></div></div>` //close content and comment
-    return commentString
-  }
-=======
->>>>>>> 1d7cbe9b4d85109b18e295ef1bd2b18eb749671d
 
     formatDate(date) {
       const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
