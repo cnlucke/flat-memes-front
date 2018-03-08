@@ -45,9 +45,8 @@ const Comment = (() => {
             }
         })
     }
-
     render() {
-      let commentString = `<div class="comment" id="comment-${this.id}">`
+      let commentString = `<div class="ui raised segment"><div class="comment" id="comment-${this.id}">`
       commentString += '<div class="content">'
       commentString += '<div class="metadata">'
       commentString += `<div class='rating'><i class="check icon"></i> ${this.rating} like`
@@ -64,7 +63,7 @@ const Comment = (() => {
       commentString += `<div class='date'>${this.formatDate(this.created_at)}</div>`
       commentString += '</div>' //close metadata
       commentString += `<div class='text'>${this.text}</div>`
-      commentString += `</div></div>` //close content and comment
+      commentString += `</div></div></div>` //close content and comment
       return commentString
     }
 

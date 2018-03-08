@@ -30,7 +30,11 @@ const Meme = (() => {
         if(containerStyle.display === 'block') {
           containerStyle.display = 'none'
           seeCommentsNode.classList.replace('minus', 'add')
-          event.target.childNodes[2].nodeValue = "See Comments"
+          if (this.comments.count > 1) {
+            event.target.childNodes[2].nodeValue = "See Comments"
+          } else {
+            event.target.childNodes[2].nodeValue = "Add Comments"
+          }
         } else {
           containerStyle.display = 'block'
           seeCommentsNode.classList.replace('add', 'minus')
@@ -49,6 +53,8 @@ const Meme = (() => {
         let commentCount = this.memeDiv().querySelector('.comment-count');
         if (this.comments.length === 1) {
           commentCount.innerText += 's';
+        } else if (this.comments.length === 0) {
+          commentCount.innerText = commentCount.innerText.slice(0, commentCount.innerText.length -1)
         }
         let commentSplit = commentCount.innerText.split(' ');
         commentSplit[0]++;
@@ -102,8 +108,8 @@ const Meme = (() => {
       .then(json => {
         // update vote count in place
         const votesNode = event.target.parentNode.nextSibling.childNodes[1]
-        const text = votesNode.innerText.split(' ')
-        const finalText = [text[0], json.rating, text[2]].join(' ')
+        let finalText =`${json.rating} Like`
+        if (json.rating !== 1) finalText += 's'
         votesNode.innerHTML = '<i class="check icon"></i>' + finalText
       })
     }
@@ -118,12 +124,11 @@ const Meme = (() => {
         body: JSON.stringify({text:text, rating:0, meme_id:this.id})
       }
       fetch(`${this.baseUrl}/comments`, options)
-      .then(res => res.json())
-      .then(json => {
-        this.addNewComment(json)
-      })
+        .then(res => res.json())
+        .then(json => {
+          this.addNewComment(json)
+        })
     }
-
 
     addNewComment(json) {
       // creating new comment with each field because mass assignment with json object adds meme object
@@ -132,7 +137,6 @@ const Meme = (() => {
       this.comments.push(newComment)
       //render comments and replace parents' comment container
       this.refreshComments()
-      this.seeMoreListener()
     }
 
     refreshComments() {
@@ -143,59 +147,56 @@ const Meme = (() => {
       this.addCommentLikeListeners()
     }
 
-    render() {
-      let memeString = `<div class="meme ui fluid card" id="meme-${this.id}">`
-      if (this.image_url) {
-        memeString += `<div class="image">
-        <img src="${this.image_url}">
+
+      render() {
+        let memeString = `<div class="meme ui fluid card" id="meme-${this.id}">`
+        if (this.image_url) {
+          memeString += `<div class="image">
+          <img src="${this.image_url}">
+          </div>`
+        }
+        if (liked_memes.includes(this.id)) {
+          memeString += `<div class="content">
+          <i class="right floated meme like icon red" id="meme-like-${this.id}" data-liked="true"></i>`
+        } else {
+          memeString += `<div class="content">
+          <i class="right floated meme like icon" id="meme-like-${this.id}" data-liked="false"></i>`
+        }
+        if (this.title) {
+          memeString += `<a class="header">${this.title}</a>`
+        }
+        memeString += `<div class="meta">
+        <span class="date">${this.whenPosted()}</span>
         </div>`
-      }
-      if (liked_memes.includes(this.id)) {
-        memeString += `<div class="content">
-        <i class="right floated meme like icon red" id="meme-like-${this.id}" data-liked="true"></i>`
-      } else {
-        memeString += `<div class="content">
-        <i class="right floated meme like icon" id="meme-like-${this.id}" data-liked="false"></i>`
-      }
+        if (this.text) {
+          memeString += `<div class="description">${this.text}</div>`
+        }
+        memeString += `</div>` //closing content div
+        memeString += `<div class="extra content">
+        <a><i class="check icon"></i>${this.rating} Like`
+        if (this.rating === 0 || this.rating > 1) {
+          memeString += `s`
+        }
+        memeString += `</a>
+        <p class="comment-count" style="float:right;">${this.comments.length} Comment`
+        if (this.comments.length === 0 || this.comments.length > 1) {
+          memeString += `s`
+        }
+        memeString += `</p>
+        </div>
+        <div class="ui bottom attached button see-more" data-id="${this.id}" id="button">
+        <i class="add icon"></i>`
+        if (this.comments.length > 0) {
+          memeString += 'See Comments'
+        } else {
+          memeString += 'Add Comment'
+        }
+        memeString += `</div>
+        </div>
+        <div class="comment-container ui comments" style="display:none"
+        id="${this.id}">${this.renderComments()}</div>`
 
-      if (this.title) {
-        memeString += `<a class="header">${this.title}</a>`
-      }
-
-      memeString += `<div class="meta">
-      <span class="date">${this.whenPosted()}</span>
-      </div>`
-      if (this.text) {
-        memeString += `<div class="description">${this.text}</div>`
-      }
-      memeString += `</div>` //closing content div
-      memeString += `<div class="extra content">
-      <a>
-      <i class="check icon"></i>
-      ${this.rating} Like`
-      if (this.rating === 0 || this.rating > 1) {
-        memeString += `s`
-      }
-      memeString += `</a>
-      <p class="comment-count"style="float:right;">${this.comments.length} Comment`
-      if (this.comments.length === 0 || this.comments.length > 1) {
-        memeString += `s`
-      }
-      memeString += `</p>
-      </div>
-      <div class="ui bottom attached button see-more" data-id="${this.id}" id="button">
-      <i class="add icon"></i>`
-      if (this.comments.length > 0) {
-        memeString += 'See Comments'
-      } else {
-        memeString += 'Add Comment'
-      }
-      memeString += `</div>
-      </div>
-      <div class="comment-container ui comments" style="display:none"
-      id="${this.id}">${this.renderComments()}</div>`
-
-      return memeString
+        return memeString
     }
 
     renderComments() {
@@ -203,15 +204,15 @@ const Meme = (() => {
     }
 
     renderCommentForm() {
-      let formString = `<form class='ui reply form'>`
+      let formString = `<div class="ui raised segment"><form class='ui reply form'>`
       formString += `<div class='field'><textarea></textarea></div>`
       formString += `<div data-id="${this.id}" class="ui primary submit button new-comment">Add Comment</div>`
-      formString += `</form>`
+      formString += `</form></div>`
       return formString
     }
 
     sortComments() {
-      this.comments.sort((a,b) => b.rating - a.rating)
+      this.comments.sort((a,b) => b.rating - a.rating);
     }
 
     whenPosted() {
