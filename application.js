@@ -42,6 +42,7 @@ class App {
       </div>
       <button class="ui button" type="submit">Preview</button>
       </form>`;
+      document.getElementById('more-memes-button-container').innerHTML = ""
       this.memePreviewListener();
     });
   }
