@@ -83,6 +83,7 @@ class Meme {
     this.rating += 1;
     event.target.classList.add('red');
     event.target.setAttribute('data-liked', 'true')
+    // console.log(this.memeDiv().children[1].children[0].innerText);
     let options = {
       method: 'PATCH',
       body: JSON.stringify( {meme: this} ),
@@ -91,14 +92,22 @@ class Meme {
         Accept: 'application/json'
       }
     }
-    
+
     fetch(this.baseUrl, options)
       .then(res => res.json())
       .then(json => {
         // update vote count in place
         const votesNode = event.target.parentNode.nextSibling.childNodes[1]
         const text = votesNode.innerText.split(' ')
-        const finalText = [text[0], parseInt(text[1]) + 1, text[2]].join(' ')
+        let finalText;
+        if (this.rating === 1) {
+          finalText = [text[0], parseInt(text[1]) + 1, text[2].slice(0, text[2].length - 1)].join(' ')
+        } else if (this.rating === 2) {
+          finalText = [text[0], parseInt(text[1]) + 1, text[2]].join(' ');
+          finalText += 's';
+        } else {
+          finalText = [text[0], parseInt(text[1]) + 1, text[2]].join(' ')
+        }
         votesNode.innerHTML = '<i class="check icon"></i>' + finalText
         // CHANGE DATA-LIKED TO TRUE
     })
@@ -152,7 +161,6 @@ class Meme {
     if (this.title) {
       memeString += `<a class="header">${this.title}</a>`
     }
-
     memeString += `<div class="meta">
                     <span class="date">${this.whenPosted()}</span>
                    </div>`
