@@ -170,6 +170,7 @@ class App {
     this.memeContainer.innerHTML += pageCount.map(meme => {
       return meme.render()
     }).join('')
+    
     pageCount.forEach(meme => {
       meme.seeMoreListener()
       meme.newCommentButtonListener()
