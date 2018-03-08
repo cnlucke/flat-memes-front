@@ -191,10 +191,10 @@ class Meme {
   }
 
   renderCommentForm() {
-    let formString = `<form class='ui reply form'>`
+    let formString = `<div class="ui raised segment"><form class='ui reply form'>`
     formString += `<div class='field'><textarea></textarea></div>`
     formString += `<div data-id="${this.id}" class="ui primary submit button new-comment">Add Comment</div>`
-    formString += `</form>`
+    formString += `</form></div>`
     return formString
   }
 
