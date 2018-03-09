@@ -4,7 +4,7 @@ class App {
     this.memeUrl = 'https://radiant-wave-81659.herokuapp.com/api/v1/memes'
     this.memes = [];
     this.pageStart = 0
-    this.pageEnd = 15;
+    this.pageEnd = 10;
   }
   // **** EVENT LISTENERS *****
   buttonEventListeners() {
@@ -126,7 +126,7 @@ class App {
       this.removeActiveClassFromAllButtons();
       top.classList.add('active');
       this.pageStart = 0;
-      this.pageEnd = 15;
+      this.pageEnd = 10;
       this.memes.sort((a,b) => {
         return b.rating - a.rating
       })
@@ -159,7 +159,7 @@ class App {
     })
     this.memes.forEach(meme => meme.sortComments())
     this.pageStart = 0;
-    this.pageEnd = 15;
+    this.pageEnd = 10;
     this.displayMemes();
   }
 
@@ -177,8 +177,8 @@ class App {
       meme.addCommentLikeListeners()
       meme.addMemeLikeListener()
     })
-    this.pageStart += 15;
-    this.pageEnd += 15;
+    this.pageStart += 10;
+    this.pageEnd += 10;
     if (this.pageStart >= this.memes.length) {
       document.getElementById('more-memes-button-container').innerHTML = "<br><br><button class='huge ui teal button'>No More Memes!</button>"
     } else {
