@@ -8,6 +8,7 @@ const Comment = (() => {
       this.meme_id = meme_id
       this.created_at = new Date(created_at);
       this.baseUrl = `https://radiant-wave-81659.herokuapp.com/api/v1/memes/${this.meme_id}/comments/${this.id}`
+      // this.baseUrl = `localhost:3000/api/v1/memes/${this.meme_id}/comments/${this.id}`
     }
 
     incrementCommentLikes(event) {
