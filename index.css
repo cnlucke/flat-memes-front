@@ -75,10 +75,9 @@ body, html {
 }
 
 .landing-image {
-    /* background-image: url('https://i.pinimg.com/564x/9e/fe/f2/9efef2c49ab8fb81f62286ecba5deb37--laminate-countertops-abstract-pattern.jpg') !important; */
-    /* background-image: url('https://cdn.shutterstock.com/shutterstock/videos/1290388/thumb/1.jpg') !important; */
     /* background-image: url('http://www.powerpointhintergrund.com/download/wood-background-pictures-free-download-4839') !important; */
-    background-image: url('https://www.photocase.com/photos/1387971-healthy-eating-life-style-background-picture-wood-food-photocase-stock-photo-large.jpeg') !important;
+    background-image: url('https://cdn.pixabay.com/photo/2017/03/10/14/04/background-2132910_1280.jpg') !important;
+    /* background-image: url('https://cdn.pixabay.com/photo/2017/10/31/15/13/background-2905526_960_720.png') !important; */
     background-size: cover !important;
 }
 
