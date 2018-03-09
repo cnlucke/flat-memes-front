@@ -1,7 +1,7 @@
 class App {
   constructor() {
     this.memeContainer = document.getElementById('meme-container')
-    this.memeUrl = 'http://localhost:3000/api/v1/memes'
+    this.memeUrl = 'https://radiant-wave-81659.herokuapp.com/api/v1/memes'
     this.memes = [];
     this.pageStart = 0
     this.pageEnd = 15;

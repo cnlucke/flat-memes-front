@@ -9,7 +9,7 @@ const Meme = (() => {
       this.rating = rating;
       this.created_at = new Date(created_at);
       this.comments = comments;
-      this.baseUrl = 'http://localhost:3000/api/v1/memes/'+this.id
+      this.baseUrl = 'https://radiant-wave-81659.herokuapp.com/api/v1/memes/'+this.id
     }
 
     memeDiv() {

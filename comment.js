@@ -7,7 +7,7 @@ const Comment = (() => {
       this.rating = rating;
       this.meme_id = meme_id
       this.created_at = new Date(created_at);
-      this.baseUrl = `http://localhost:3000/api/v1/memes/${this.meme_id}/comments/${this.id}`
+      this.baseUrl = `https://radiant-wave-81659.herokuapp.com/api/v1/memes/${this.meme_id}/comments/${this.id}`
     }
 
     incrementCommentLikes(event) {
@@ -45,7 +45,7 @@ const Comment = (() => {
             }
         })
     }
-    
+
     render() {
       let commentString = `<div class="ui raised segment">
                             <div class="comment" id="comment-${this.id}">
